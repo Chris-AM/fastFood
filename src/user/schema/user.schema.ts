@@ -6,7 +6,7 @@ export const UserSchema = new mongoose.Schema({
   adress: { type: String, required: true },
   phoneCode: { type: String, required: true },
   phoneNumber: { type: Number, required: true },
-  password: { type: Number, required: true }
+  password: { type: String, required: true }
 }, {
   timestamps: true
 },);
