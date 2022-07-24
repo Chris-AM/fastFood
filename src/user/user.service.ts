@@ -37,4 +37,8 @@ export class UserService {
     const updatedUser = { ...userDto, password: hash };
     return await this.model.findByIdAndUpdate(id, updatedUser, {new: true});
   }
+
+  async deleteUser(id: string): Promise<IUser>{
+    return await this.model.findByIdAndDelete(id);
+  }
 }
