@@ -10,7 +10,7 @@ export class UserDTO{
   @IsNotEmpty()
   @IsString()
   readonly adress: string;
-  @IsNotEmpty()
+  // @IsNotEmpty()
   @IsString()
   readonly phoneCode: string; //default: +569
   @IsNotEmpty()
