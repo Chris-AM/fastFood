@@ -8,9 +8,10 @@ import { Model } from 'mongoose';
 
 @Injectable()
 export class UserService {
-  
-  constructor(@InjectModel(USER.name) 
-    private readonly model: Model<IUser>){}
+  constructor(
+    @InjectModel(USER.name)
+    private readonly model: Model<IUser>,
+  ) {}
 
   async hashedPassword(password: string): Promise<string> {
     const salt = await bcrypt.genSalt(10);
@@ -19,7 +20,7 @@ export class UserService {
 
   async createUser(userDto: UserDTO): Promise<IUser> {
     const hash = await this.hashedPassword(userDto.password);
-    const newUser = new this.model({...userDto, password: hash});
+    const newUser = new this.model({ ...userDto, password: hash });
     return await newUser.save();
   }
 
@@ -27,4 +28,7 @@ export class UserService {
     return await this.model.find();
   }
 
+  async getUserByID(id: string): Promise<IUser> {
+    return await this.model.findById(id);
+  }
 }
