@@ -17,7 +17,6 @@ export class UserService {
     const salt = await bcrypt.genSalt(10);
     return await bcrypt.hash(password, salt);
   }
-
   async createUser(userDto: UserDTO): Promise<IUser> {
     const hash = await this.hashedPassword(userDto.password);
     const newUser = new this.model({ ...userDto, password: hash });
@@ -35,10 +34,10 @@ export class UserService {
   async updateUser(id: string, userDto: UserDTO): Promise<IUser> {
     const hash = await this.hashedPassword(userDto.password);
     const updatedUser = { ...userDto, password: hash };
-    return await this.model.findByIdAndUpdate(id, updatedUser, {new: true});
+    return await this.model.findByIdAndUpdate(id, updatedUser, { new: true });
   }
 
-  async deleteUser(id: string): Promise<IUser>{
+  async deleteUser(id: string): Promise<IUser> {
     return await this.model.findByIdAndDelete(id);
   }
 }
