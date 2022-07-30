@@ -3,17 +3,15 @@ import { IsNotEmpty, IsNumber, IsString, } from "class-validator";
 export class ProductDTO{
   @IsString()
   @IsNotEmpty()
-  name: string;
+  readonly name: string;
   @IsNumber()
   @IsNotEmpty()
-  price: number;
+  readonly price: number;
   @IsString()
   @IsNotEmpty()
-  description: string;
-  @IsNumber()
-  @IsNotEmpty()
-  quantity: number;
+  readonly description: string;
   @IsString()
   @IsNotEmpty()
-  photo: string;
+  readonly photo: string;
+  
 }
