@@ -1,7 +1,7 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { IProduct } from 'src/common/interfaces/product.interface';
+import { IProduct } from './interface/product.interface';
 import { PRODUCT } from 'src/common/models/models';
 import { ProductDTO } from './dto/product.dto';
 
