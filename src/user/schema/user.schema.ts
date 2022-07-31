@@ -11,3 +11,7 @@ export const UserSchema = new mongoose.Schema({
   timestamps: true
 },);
 UserSchema.index({email: 1}, {unique:true});
+UserSchema.method('toJSON', function(){
+  const { __v, ...object } = this.toObject();
+  return object;
+});

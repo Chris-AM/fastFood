@@ -16,7 +16,6 @@ export class ProductService {
 
   async productIngredients( productId: string, ingredientId: string): 
     Promise<IProduct> {
-    try {
       const ingredientsInProduct = await this.model.findByIdAndUpdate(
         productId, {
           $addToSet: { ingredients: ingredientId }
@@ -24,13 +23,10 @@ export class ProductService {
         { new: true }
       ).populate('ingredients');
       return ingredientsInProduct
-    } catch (error) {
-      
-    }
   }
 
   async getAllProducts(): Promise<IProduct[]> {
-    return await this.model.find();
+    return await this.model.find().populate('ingredients');
   }
 
   async getProductById(id: string): Promise<IProduct> {

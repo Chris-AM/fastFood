@@ -10,3 +10,7 @@ export const IngredientSchema = new mongoose.Schema({
   timestamps: true
 },);
 IngredientSchema.index({name: 1}, {unique: true});
+IngredientSchema.method('toJSON', function(){
+  const { __v, ...object } = this.toObject();
+  return object;
+});
