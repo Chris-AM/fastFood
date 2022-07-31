@@ -5,6 +5,7 @@ import { AuthModule } from "./auth/auth.module";
 import { UserModule } from './user/user.module';
 import { ProductModule } from './product/product.module';
 import { IngredientModule } from './ingredient/ingredient.module';
+import { MenuModule } from './menu/menu.module';
 
 @Module({
   imports: [ 
@@ -17,6 +18,7 @@ import { IngredientModule } from './ingredient/ingredient.module';
     ProductModule,
     AuthModule,
     IngredientModule,
+    MenuModule,
   ],
 })
 
