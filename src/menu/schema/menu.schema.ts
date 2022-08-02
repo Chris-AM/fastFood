@@ -6,7 +6,7 @@ export const MenuSchema = new mongoose.Schema(
     price: { type: Number, required: true },
     description: { type: String, required: false },
     photo: { type: String, required: true },
-    ingredients: [{ type: mongoose.Schema.Types.ObjectId, 
+    products: [{ type: mongoose.Schema.Types.ObjectId, 
       ref: 'products' }],
   },{
     timestamps: true,
