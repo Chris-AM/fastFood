@@ -6,8 +6,7 @@ import { UserModule } from './user/user.module';
 import { ProductModule } from './product/product.module';
 import { IngredientModule } from './ingredient/ingredient.module';
 import { MenuModule } from './menu/menu.module';
-import { ShoppingCartService } from './shopping-cart/shopping-cart.service';
-import { ShoppingCartController } from './shopping-cart/shopping-cart.controller';
+import { ShoppingCartModule } from './shopping-cart/shopping-cart.module';
 
 @Module({
   imports: [ 
@@ -21,9 +20,8 @@ import { ShoppingCartController } from './shopping-cart/shopping-cart.controller
     AuthModule,
     IngredientModule,
     MenuModule,
+    ShoppingCartModule,
   ],
-  providers: [ShoppingCartService],
-  controllers: [ShoppingCartController],
 })
 
 export class AppModule {}
