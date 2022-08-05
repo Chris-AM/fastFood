@@ -7,9 +7,11 @@ import {
   Put,
   Get,
 } from '@nestjs/common';
+import {ApiTags} from '@nestjs/swagger';
 import { IngredientDTO } from './dto/ingrefient.dto';
 import { IngredientService } from './ingredient.service';
 
+@ApiTags('ingredient')
 @Controller('api/v1/ingredient')
 export class IngredientController {
   constructor(private readonly ingredientService: IngredientService) {}

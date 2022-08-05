@@ -9,10 +9,12 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
+import {ApiTags} from '@nestjs/swagger';
 import { IngredientService } from 'src/ingredient/ingredient.service';
 import { ProductDTO } from './dto/product.dto';
 import { ProductService } from './product.service';
 
+@ApiTags('product')
 @Controller('api/v1/product')
 export class ProductController {
   constructor(

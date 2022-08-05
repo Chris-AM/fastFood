@@ -7,11 +7,13 @@ import {
   Param,
   Post,
 } from '@nestjs/common';
+import {ApiTags} from '@nestjs/swagger';
 import { MenuService } from 'src/menu/menu.service';
 import { ProductService } from 'src/product/product.service';
 import { ShoppingCartDTO } from './dto/shopping-cart.dto';
 import { ShoppingCartService } from './shopping-cart.service';
 
+@ApiTags('order')
 @Controller('api/v1/orders')
 export class ShoppingCartController {
   constructor(
