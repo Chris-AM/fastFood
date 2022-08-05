@@ -11,13 +11,13 @@ import { ProductModule } from 'src/product/product.module';
     MongooseModule.forFeatureAsync([
       {
         name: MENU.name,
-        useFactory: () => 
-          MenuSchema.plugin(require('mongoose-autopopulate')),
+        useFactory: () => MenuSchema.plugin(require('mongoose-autopopulate')),
       },
     ]),
     ProductModule,
   ],
   controllers: [MenuController],
   providers: [MenuService],
+  exports: [MenuService],
 })
 export class MenuModule {}

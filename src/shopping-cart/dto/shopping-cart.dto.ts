@@ -1,6 +1,6 @@
 import {IsNotEmpty, IsNumber} from "class-validator";
 
-export class ShoppingCart {
+export class ShoppingCartDTO {
   @IsNotEmpty()
   @IsNumber()
   readonly total: Number;
