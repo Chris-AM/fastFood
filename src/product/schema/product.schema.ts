@@ -4,7 +4,7 @@ import { IngredientsDocument } from '../../ingredient/schema/ingredient.schema';
 
 export type ProductsDocument = Products & Document;
 
-@Schema()
+@Schema({timestamps: true})
 export class Products {
   @Prop({ required: true, unique: true })
   name: string;

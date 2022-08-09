@@ -3,7 +3,7 @@ import { Document } from 'mongoose';
 
 export type IngredientsDocument = Ingredients & Document;
 
-@Schema()
+@Schema({timestamps: true})
 export class Ingredients {
   @Prop({ required: true, unique: true })
   name: string;
@@ -13,7 +13,7 @@ export class Ingredients {
   description: string;
   @Prop({ required: true })
   inStock: boolean;
-  @Prop({ required: true })
+  @Prop()
   image: string;
 }
 

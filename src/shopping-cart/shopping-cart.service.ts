@@ -2,20 +2,19 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ShoppingCartDTO } from './dto/shopping-cart.dto';
-import { IShoppingCart } from './interface/shopping-cart.interface';
 import { Orders } from './schema/shopping-cart.schema';
 
 @Injectable()
 export class ShoppingCartService {
   constructor(
     @InjectModel(Orders.name)
-    private model: Model<IShoppingCart>
+    private model: Model<Orders>
   ){}
 
   async postMenuToOrder(
     orderId: string,
-    menuId: string
-  ): Promise<IShoppingCart> {
+    menuId: any
+  ) {
     const menusInOrder = await this.model
     .findByIdAndUpdate(
       orderId,
@@ -29,8 +28,8 @@ export class ShoppingCartService {
 
   async postProductToOrder(
     orderId: string,
-    productId: string,
-  ): Promise<IShoppingCart> {
+    productId: any,
+  ) {
     const productsInOrder = await this.model
     .findByIdAndUpdate(
       orderId,
@@ -46,16 +45,16 @@ export class ShoppingCartService {
 
   async createOrder(
     shoppingCartDto: ShoppingCartDTO
-  ): Promise <IShoppingCart> {
+  ) {
     const newOrder = new this.model(shoppingCartDto);
     return await newOrder.save();
   }
   
-  async getAllOrders(): Promise<IShoppingCart[]> {
+  async getAllOrders() {
     return await this.model.find().populate('menus').populate('products');
   }
 
-  async getOrderById(id: string): Promise<IShoppingCart> {
+  async getOrderById(id: string) {
     return await this.model.findById(id);
   }
 }

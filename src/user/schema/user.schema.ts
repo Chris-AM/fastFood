@@ -3,7 +3,7 @@ import { Document } from 'mongoose'
 
 export type UsersDocument = Users & Document;
 
-@Schema()
+@Schema({timestamps: true})
 export class Users {
   @Prop({required: true})
   name: string;
@@ -17,6 +17,8 @@ export class Users {
   phoneNumber: number;
   @Prop({required: true})
   password: string;  
+  @Prop()
+  avatar: string;
 }
 
 export const UsersSchema =

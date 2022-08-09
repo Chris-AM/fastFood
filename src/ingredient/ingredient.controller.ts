@@ -6,42 +6,34 @@ import {
   Param,
   Put,
   Get,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
-import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';
-import { IngredientDTO } from './dto/ingrefient.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { IngredientDTO } from './dto/ingredient.dto';
 import { IngredientService } from './ingredient.service';
+import { STORAGE } from '../common/media.handler';
 
 @ApiBearerAuth()
 @ApiTags('ingredient')
 @Controller('ingredient')
 export class IngredientController {
-  constructor(private readonly ingredientService: IngredientService) {}
+  constructor(
+    private readonly ingredientService: IngredientService
+  ) {}
 
   @Post()
-  createIngredient(@Body() ingredientDto: IngredientDTO) {
+  createIngredient(
+    @Body() ingredientDto: IngredientDTO
+  ) {
     return this.ingredientService.createIngredient(ingredientDto);
   }
 
-  @Get()
-  getAllIngredints() {
-    return this.ingredientService.getAllIngredints();
-  }
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('img', {storage: STORAGE}))
+  uploadImage(@UploadedFile() file: Express.Multer.File){
 
-  @Get(':id')
-  getIngredientByID(@Param('id') id: string) {
-    return this.ingredientService.getIngredientByID(id);
   }
-
-  @Put(':id')
-  updateIngredient(
-    @Param('id') id: string,
-    @Body() ingredientDto: IngredientDTO,
-  ) {
-    return this.ingredientService.updateIngredient(id, ingredientDto);
-  }
-
-  @Delete(':id')
-  deleteIngredient(@Param('id') id: string) {
-    return this.ingredientService.deleteIngredient(id);
-  }
+ 
 }

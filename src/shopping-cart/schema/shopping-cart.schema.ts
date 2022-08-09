@@ -6,7 +6,7 @@ import { UsersDocument } from "src/user/schema/user.schema";
 
 export type OrdersDocument = Orders & Document;
 
-@Schema()
+@Schema({timestamps: true})
 export class Orders {
   @Prop({ required: true, type: MongooseSchema.Types.Array })
   menus: MenusDocument[];

@@ -7,6 +7,6 @@ export class LoginAuthDto {
   email: string;
   @ApiProperty()
   @MinLength(4)
-  @MaxLength(8)
+  @MaxLength(16)
   password: string;
 }

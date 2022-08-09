@@ -4,7 +4,7 @@ import { ProductsDocument } from 'src/product/schema/product.schema';
 
 export type MenusDocument = Menus & Document;
 
-@Schema()
+@Schema({timestamps: true})
 export class Menus {
   @Prop({ required: true, unique: true })
   name: string;
