@@ -3,6 +3,7 @@ import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { AppModule } from "./app.module";
 import { AllExceptionFilter } from "./common/filters/http-exception.filter";
+import {LoggerInterceptor} from "./common/interceptors/logger.interceptor";
 import { TimeOutInterceptor } from "./common/interceptors/timeout.interceptor";
 
 
@@ -17,6 +18,7 @@ async function fastoodBackend() {
   });
   app.useGlobalFilters(new AllExceptionFilter());
   app.useGlobalInterceptors(new TimeOutInterceptor());
+  app.useGlobalInterceptors(new LoggerInterceptor());
   app.useGlobalPipes(new ValidationPipe);
   console.log('listing in port ===> ', port);
   const options = new DocumentBuilder()
