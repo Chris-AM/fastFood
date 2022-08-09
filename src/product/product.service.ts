@@ -2,13 +2,13 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { IProduct } from './interface/product.interface';
-import { PRODUCT } from 'src/common/models/models';
 import { ProductDTO } from './dto/product.dto';
+import { Products } from './schema/product.schema';
 
 @Injectable()
 export class ProductService {
   constructor(
-    @InjectModel(PRODUCT.name) 
+    @InjectModel(Products.name) 
     private model: Model<IProduct>
   ) {}
 

@@ -3,13 +3,13 @@ import { IUser } from './interface/user.interface';
 import { UserDTO } from './dto/user.dto';
 import * as bcrypt from 'bcrypt';
 import { InjectModel } from '@nestjs/mongoose';
-import { USER } from 'src/common/models/models';
 import { Model } from 'mongoose';
+import { Users } from './schema/user.schema';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectModel(USER.name)
+    @InjectModel(Users.name)
     private readonly model: Model<IUser>,
   ) {}
 

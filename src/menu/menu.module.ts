@@ -1,16 +1,15 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { MENU } from 'src/common/models/models';
 import { MenuController } from './menu.controller';
 import { MenuService } from './menu.service';
-import { MenuSchema } from './schema/menu.schema';
+import { Menus, MenuSchema } from './schema/menu.schema';
 import { ProductModule } from 'src/product/product.module';
 
 @Module({
   imports: [
     MongooseModule.forFeatureAsync([
       {
-        name: MENU.name,
+        name: Menus.name,
         useFactory: () => MenuSchema.plugin(require('mongoose-autopopulate')),
       },
     ]),

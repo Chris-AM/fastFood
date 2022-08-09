@@ -1,16 +1,21 @@
-import * as mongoose from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
 
-export const IngredientSchema = new mongoose.Schema({
-  name: { type: String, required: true, unique: true },
-  type: { type: String, required: true },
-  description: { type: String, required: false },
-  inStock: {type: Boolean, required: true},
-  image: {type: String, required: true}
-}, {
-  timestamps: true
-},);
-IngredientSchema.index({name: 1}, {unique: true});
-IngredientSchema.method('toJSON', function(){
-  const { __v, ...object } = this.toObject();
-  return object;
-});
+export type IngredientsDocument = Ingredients & Document;
+
+@Schema()
+export class Ingredients {
+  @Prop({ required: true, unique: true })
+  name: string;
+  @Prop({ required: true })
+  type: string;
+  @Prop({ required: true })
+  description: string;
+  @Prop({ required: true })
+  inStock: boolean;
+  @Prop({ required: true })
+  image: string;
+}
+
+export const IngredientSchema = 
+  SchemaFactory.createForClass(Ingredients);

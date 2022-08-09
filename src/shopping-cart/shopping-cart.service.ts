@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { SHOPPINGCART } from 'src/common/models/models';
 import { ShoppingCartDTO } from './dto/shopping-cart.dto';
 import { IShoppingCart } from './interface/shopping-cart.interface';
+import { Orders } from './schema/shopping-cart.schema';
 
 @Injectable()
 export class ShoppingCartService {
   constructor(
-    @InjectModel(SHOPPINGCART.name)
+    @InjectModel(Orders.name)
     private model: Model<IShoppingCart>
   ){}
 

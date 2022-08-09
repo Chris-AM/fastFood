@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
-import { PRODUCT } from 'src/common/models/models';
 import { ProductController } from './product.controller';
 import { ProductService } from './product.service';
-import { ProductSchema } from './schema/product.schema';
+import { ProductSchema, Products } from './schema/product.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 import { IngredientModule } from 'src/ingredient/ingredient.module';
 
@@ -10,7 +9,7 @@ import { IngredientModule } from 'src/ingredient/ingredient.module';
   imports: [
     MongooseModule.forFeatureAsync([
       {
-        name: PRODUCT.name,
+        name: Products.name,
         useFactory: () =>
           ProductSchema.plugin(require('mongoose-autopopulate')),
       },

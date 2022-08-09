@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { IIngredient } from './interface/ingredient.interface';
-import { INGREDIENT } from 'src/common/models/models';
 import { IngredientDTO } from './dto/ingrefient.dto';
+import { Ingredients } from './schema/ingredient.schema';
 
 @Injectable()
 export class IngredientService {
   constructor(
-    @InjectModel(INGREDIENT.name)
+    @InjectModel(Ingredients.name)
     private readonly model: Model<IIngredient>,
   ) {}
 

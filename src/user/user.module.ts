@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { USER } from 'src/common/models/models';
-import { UserSchema } from './schema/user.schema';
+import { Users, UsersSchema } from './schema/user.schema';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 
@@ -9,13 +8,16 @@ import { UserService } from './user.service';
   imports: [
     MongooseModule.forFeatureAsync([
       {
-        name: USER.name,
-        useFactory: () => UserSchema
+        name: Users.name,
+        useFactory: () => 
+          UsersSchema.plugin(
+            require('mongoose-autopopulate')
+          ),
       },
     ]),
   ],
   controllers: [UserController],
   providers: [UserService],
-  exports: [ UserService ]
+  exports: [UserService],
 })
 export class UserModule {}

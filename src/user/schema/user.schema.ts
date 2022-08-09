@@ -1,17 +1,24 @@
-import * as mongoose from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose'
 
-export const UserSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  adress: { type: String, required: true },
-  phoneCode: { type: String, required: true, default: '+569'},
-  phoneNumber: { type: Number, required: true },
-  password: { type: String, required: true }
-}, {
-  timestamps: true
-},);
-UserSchema.index({email: 1}, {unique:true});
-UserSchema.method('toJSON', function(){
-  const { __v, ...object } = this.toObject();
-  return object;
-});
+export type UsersDocument = Users & Document;
+
+@Schema()
+export class Users {
+  @Prop({required: true})
+  name: string;
+  @Prop({required: true, unique: true})
+  email: string;
+  @Prop({required: true})
+  adress: string;
+  @Prop({default: '+569'})
+  phoneCode: string;
+  @Prop({required: true})
+  phoneNumber: number;
+  @Prop({required: true})
+  password: string;  
+}
+
+export const UsersSchema =
+  SchemaFactory.createForClass(Users);
+
