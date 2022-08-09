@@ -7,10 +7,14 @@ import { ProductModule } from './product/product.module';
 import { IngredientModule } from './ingredient/ingredient.module';
 import { MenuModule } from './menu/menu.module';
 import { ShoppingCartModule } from './shopping-cart/shopping-cart.module';
+import {ServeStaticModule } from "@nestjs/serve-static";
+import { join } from "path";
 
 @Module({
   imports: [ 
-    ConfigModule.forRoot({
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+    }),   ConfigModule.forRoot({
       envFilePath:[ '.env.development' ],
       isGlobal: true,
     }),

@@ -7,12 +7,13 @@ import {
   Put,
   Get,
 } from '@nestjs/common';
-import {ApiTags} from '@nestjs/swagger';
+import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';
 import { IngredientDTO } from './dto/ingrefient.dto';
 import { IngredientService } from './ingredient.service';
 
+@ApiBearerAuth()
 @ApiTags('ingredient')
-@Controller('api/v1/ingredient')
+@Controller('ingredient')
 export class IngredientController {
   constructor(private readonly ingredientService: IngredientService) {}
 

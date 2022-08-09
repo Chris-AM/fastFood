@@ -9,13 +9,14 @@ import {
   Post,
   Put
 } from '@nestjs/common';
-import {ApiTags} from '@nestjs/swagger';
+import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';
 import {ProductService} from 'src/product/product.service';
 import {MenuDTO} from './dto/menu.dto';
 import {MenuService} from './menu.service';
 
+@ApiBearerAuth()
 @ApiTags('menu')
-@Controller('api/v1/menu')
+@Controller('menu')
 export class MenuController {
   constructor(
     private readonly menuService: MenuService,

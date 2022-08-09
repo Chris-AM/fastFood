@@ -7,14 +7,15 @@ import {
   Param,
   Post,
 } from '@nestjs/common';
-import {ApiTags} from '@nestjs/swagger';
+import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';
 import { MenuService } from 'src/menu/menu.service';
 import { ProductService } from 'src/product/product.service';
 import { ShoppingCartDTO } from './dto/shopping-cart.dto';
 import { ShoppingCartService } from './shopping-cart.service';
 
+@ApiBearerAuth()
 @ApiTags('order')
-@Controller('api/v1/orders')
+@Controller('order')
 export class ShoppingCartController {
   constructor(
     private readonly shoppingCartService: ShoppingCartService,
@@ -50,7 +51,8 @@ export class ShoppingCartController {
     @Param('orderId') orderId: string,
     @Param('productId') productId: string,
   ) {
-    const product = await this.productService.getProductById(productId);
+    const product = 
+      await this.productService.getProductById(productId);
     if (!product) {
       throw new HttpException(
         'product not found or does not exisists',

@@ -9,13 +9,14 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import {ApiTags} from '@nestjs/swagger';
+import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';
 import { IngredientService } from 'src/ingredient/ingredient.service';
 import { ProductDTO } from './dto/product.dto';
 import { ProductService } from './product.service';
 
+@ApiBearerAuth()
 @ApiTags('product')
-@Controller('api/v1/product')
+@Controller('product')
 export class ProductController {
   constructor(
     private readonly productService: ProductService,

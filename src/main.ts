@@ -1,4 +1,4 @@
-import { ValidationPipe } from "@nestjs/common";
+import { ValidationPipe, VersioningType } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { AppModule } from "./app.module";
@@ -8,7 +8,13 @@ import { TimeOutInterceptor } from "./common/interceptors/timeout.interceptor";
 
 async function fastoodBackend() {
   const port = process.env.PORT || 3000;
-  const app = await NestFactory.create( AppModule );
+  const app = await NestFactory.create( AppModule, {
+    cors: true
+  });
+  app.enableVersioning({
+    defaultVersion: '1',
+    type: VersioningType.URI,
+  });
   app.useGlobalFilters(new AllExceptionFilter());
   app.useGlobalInterceptors(new TimeOutInterceptor());
   app.useGlobalPipes(new ValidationPipe);
@@ -17,6 +23,7 @@ async function fastoodBackend() {
   .setTitle('FastFood App')
   .setDescription('MVP')
   .setVersion('1.0.0')
+  .addBearerAuth()
   .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('/api/docs', app, document, {
