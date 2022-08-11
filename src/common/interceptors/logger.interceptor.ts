@@ -13,10 +13,9 @@ export class LoggerInterceptor implements NestInterceptor {
     next: CallHandler
   ): Observable<any> {
     const [req, res] = context.getArgs();
-    console.log('req ===>', req.params);
     return next.handle()
       .pipe(
-        tap((value) => console.log(`response ${value}`))
+        tap((value) => console.log(`response ${JSON.stringify(value)}`))
       )
   }
 }

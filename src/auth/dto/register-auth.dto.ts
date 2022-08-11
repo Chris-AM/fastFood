@@ -17,7 +17,6 @@ export class RegisterAuthDto {
   @IsNotEmpty()
   adress: string;
   @ApiProperty()
-  @IsNotEmpty()
   phoneCode: string;
   @ApiProperty()
   @IsNotEmpty()

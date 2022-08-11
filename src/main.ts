@@ -20,7 +20,6 @@ async function fastoodBackend() {
   app.useGlobalInterceptors(new TimeOutInterceptor());
   app.useGlobalInterceptors(new LoggerInterceptor());
   app.useGlobalPipes(new ValidationPipe);
-  console.log('listing in port ===> ', port);
   const options = new DocumentBuilder()
   .setTitle('FastFood App')
   .setDescription('MVP')

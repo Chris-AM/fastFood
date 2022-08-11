@@ -19,6 +19,8 @@ export class Users {
   password: string;  
   @Prop()
   avatar: string;
+  @Prop({default:['user']})
+  role: string[];
 }
 
 export const UsersSchema =
