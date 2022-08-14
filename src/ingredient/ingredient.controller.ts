@@ -12,6 +12,7 @@ import { IngredientDTO } from './dto/ingredient.dto';
 import { IngredientService } from './ingredient.service';
 import { STORAGE } from '../common/media.handler';
 import { JwtAgentGuard } from 'src/common/guards/jwt-agent.guard';
+import { Role } from 'src/common/decorators/role.decorator';
 
 @ApiBearerAuth()
 @ApiTags('ingredient')
@@ -23,7 +24,7 @@ export class IngredientController {
   ) {}
 
   @Post()
-  //@Role(['admin'])
+  @Role(['admin'])
   createIngredient(
     @Body() ingredientDto: IngredientDTO
   ) {

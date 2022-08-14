@@ -23,6 +23,7 @@ export class RoleAgentGuard implements CanActivate {
       .get<string>('role', context.getHandler());
     const req = context.getArgByIndex(0)
     const {role}  = req.user;
+    console.log(role);
     const isAllowed = role.some((rol) => 
       getRoleMetaData.includes(rol));
     if(!isAllowed) 
