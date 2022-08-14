@@ -12,7 +12,11 @@ export class IngredientService {
   ) {}
 
   async createIngredient(ingredientDto: IngredientDTO) {
-    return this.model.create(ingredientDto);
+    try {
+      return this.model.create(ingredientDto);
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   async getAllIngredints() {
