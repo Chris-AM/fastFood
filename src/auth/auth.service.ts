@@ -6,11 +6,13 @@ import { LoginAuthDto } from './dto/login-auth.dto';
 import { RegisterAuthDto } from './dto/register-auth.dto';
 import { comparePassToHash, plainToHash } from './utils/handleBCrypt';
 import { JwtService } from '@nestjs/jwt';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly jwtService: JwtService, 
+    private readonly jwtService: JwtService,
+    private readonly eventEmiiter: EventEmitter2,
     @InjectModel(Users.name)
     private readonly userModel: Model<UsersDocument>,
   ) {}
@@ -21,7 +23,12 @@ export class AuthService {
       ...user,
       password: await plainToHash(password),
     };
-    return this.userModel.create(parsedUser);
+
+    const newUser = await this.userModel.create(parsedUser);
+
+    this.eventEmiiter.emit('user.created', newUser);
+
+    return newUser;
   }
 
   public async login(userLoginBody: LoginAuthDto) {
@@ -39,13 +46,15 @@ export class AuthService {
 
     const payload = { id: flatUser._id };
 
-    const token = this.jwtService.sign(payload); 
-    console.log(token)
+    const token = this.jwtService.sign(payload);
+
     const data = {
       token,
       user: flatUser,
     };
-    
+
+    this.eventEmiiter.emit('user.logged', data);
+
     return data;
   }
 }

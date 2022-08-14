@@ -9,15 +9,20 @@ import { MenuModule } from './menu/menu.module';
 import { ShoppingCartModule } from './shopping-cart/shopping-cart.module';
 import {ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "path";
+import { EventEmailModule } from './event-email/event-email.module';
+import { EventEmitterModule } from "@nestjs/event-emitter";
+import { EmailsModule } from './emails/emails.module';
 
 @Module({
   imports: [ 
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
-    }),   ConfigModule.forRoot({
+    }),
+    ConfigModule.forRoot({
       envFilePath:[ '.env.development' ],
       isGlobal: true,
     }),
+    EventEmitterModule.forRoot(),
     MongooseModule.forRoot(process.env.URI_MONGODB),
     UserModule,
     ProductModule,
@@ -25,6 +30,8 @@ import { join } from "path";
     IngredientModule,
     MenuModule,
     ShoppingCartModule,
+    EventEmailModule,
+    EmailsModule,
   ],
 })
 
