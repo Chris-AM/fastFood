@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export type ProductsDocument = Products & Document;
 
-@Schema({timestamps: true})
+@Schema({ timestamps: true })
 export class Products {
   @Prop({ unique: true, default: uuidv4 })
   id: string;
@@ -17,9 +17,13 @@ export class Products {
   description: string;
   @Prop({ required: true })
   photo: string;
-  @Prop({ required: true, type: MongooseSchema.Types.Array })
-  ingredients: IngredientsDocument[];
+  @Prop({ required: true, ref: 'Ingredients' })
+  ingredients: string[];
 }
 
-export const ProductSchema = 
-  SchemaFactory.createForClass(Products);
+export const ProductSchema = SchemaFactory.createForClass(Products);
+
+ProductSchema.method('toJSON', function () {
+  const { __v, _id, ...object } = this.toObject();
+  return object;
+});

@@ -18,5 +18,8 @@ export class ProductDTO{
   @IsString()
   @IsNotEmpty()
   readonly photo: string;
-  
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  readonly ingredients: string[];
 }

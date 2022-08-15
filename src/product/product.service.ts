@@ -14,5 +14,8 @@ export class ProductService {
     private readonly ingredientsModel: Model<IngredientsDocument>
   ) {}
 
+  createProduct(productDTO: ProductDTO): Promise<ProductsDocument> {
+    return this.productsModel.create(productDTO);
+  }
   
 }
