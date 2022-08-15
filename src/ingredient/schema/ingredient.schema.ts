@@ -16,9 +16,14 @@ export class Ingredients {
   description: string;
   @Prop({ required: true })
   inStock: boolean;
-  @Prop()
+  @Prop({ default: null })
   image: string;
 }
 
 export const IngredientSchema = 
   SchemaFactory.createForClass(Ingredients);
+
+IngredientSchema.method('toJSON', function () {
+  const { __v, _id, ...object } = this.toObject();
+  return object;
+});

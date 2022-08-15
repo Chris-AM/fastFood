@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { IngredientDTO } from './dto/ingredient.dto';
 import { Ingredients, IngredientsDocument } from './schema/ingredient.schema';
-
+import { Express } from "express";
 
 @Injectable()
 export class IngredientService {
@@ -17,6 +17,18 @@ export class IngredientService {
       return this.ingredientsModel.create(ingredientDto);
     } catch (error) {
       console.log(error)
+    }
+  }
+
+  async uploadImage(id: string, fileName: string){
+    try {
+    return this.ingredientsModel.findOneAndUpdate(
+      { id },
+      { image: fileName },
+      { new: true, upsert: true }
+    );
+    } catch (error) {
+      console.log(error)      
     }
   }
   

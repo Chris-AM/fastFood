@@ -14,7 +14,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { IngredientDTO } from './dto/ingredient.dto';
 import { IngredientService } from './ingredient.service';
-import { STORAGE } from '../common/media.handler';
+import { storage } from '../common/media.handler';
 import { JwtAgentGuard } from 'src/common/guards/jwt-agent.guard';
 import { Role } from 'src/common/decorators/role.decorator';
 import { RoleAgentGuard } from 'src/common/guards/role-agent.guard';
@@ -37,10 +37,13 @@ export class IngredientController {
     return this.ingredientService.createIngredient(ingredientDto);
   }
 
-  @Post('upload')
-  @UseInterceptors(FileInterceptor('img', {storage: STORAGE}))
-  uploadImage(@UploadedFile() file: Express.Multer.File){
-
+  @Post('upload/:id')
+  @HttpCode(201)
+  @Role(['admin'])
+  @UseInterceptors(FileInterceptor('img', { storage }))
+  uploadImage(@Param('id') id: string, @UploadedFile() file: Express.Multer.File) {
+    console.log(id, file.filename)
+    this.ingredientService.uploadImage(id, file.filename);
   }
 
   @Get()
