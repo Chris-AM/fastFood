@@ -30,6 +30,7 @@ export class RoleAgentGuard implements CanActivate {
       throw new HttpException(
         'do not have the permissions', HttpStatus.UNAUTHORIZED
       )
+    console.log('isAllowed ===> ', isAllowed);
     return isAllowed;
   }
   
