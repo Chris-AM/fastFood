@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
+import { IngredientType } from './ingredient.enum';
 
 export type IngredientsDocument = Ingredients & Document;
 
@@ -10,8 +11,8 @@ export class Ingredients {
   id: string;
   @Prop({ required: true, unique: true })
   name: string;
-  @Prop({ required: true })
-  type: string;
+  @Prop({ required: true, enum: IngredientType })
+  type: IngredientType;
   @Prop({ required: true })
   description: string;
   @Prop({ required: true })

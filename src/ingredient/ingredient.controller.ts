@@ -9,6 +9,7 @@ import {
   HttpCode,
   Delete,
   Param,
+  Patch,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
@@ -50,7 +51,21 @@ export class IngredientController {
   @HttpCode(200)
   @Role(['admin', 'user'])
   getAllIngredients() {
-    return this.ingredientService.getAllIngredints();
+    return this.ingredientService.getAllIngredients();
+  }
+
+  @Get(':id')
+  @HttpCode(200)
+  @Role(['admin' , 'user'])
+  getIngredientById(@Param('id') id: string) {
+    return this.ingredientService.getIngredientById(id);
+  }
+
+  @Patch(':id')
+  @HttpCode(200)
+  @Role(['admin'])
+  updateIngredient(@Param('id') id: string, @Body() ingredientDto: IngredientDTO) {
+    return this.ingredientService.updateIngredient(id, ingredientDto);
   }
 
   @Delete(':id')

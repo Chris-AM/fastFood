@@ -1,5 +1,6 @@
 import {ApiProperty} from "@nestjs/swagger";
 import { IsBoolean, IsNotEmpty, IsString } from "class-validator";
+import { IngredientType } from "../schema/ingredient.enum";
 
 export class IngredientDTO{
   @ApiProperty()
@@ -9,7 +10,7 @@ export class IngredientDTO{
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  readonly type: string;
+  readonly type: IngredientType;
   @ApiProperty()
   @IsString()
   readonly description: string;

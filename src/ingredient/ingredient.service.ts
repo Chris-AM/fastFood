@@ -32,8 +32,21 @@ export class IngredientService {
     }
   }
   
-  async getAllIngredints() {
+  async getAllIngredients() {
     return await this.ingredientsModel.find();
+  }
+
+  async getIngredientById(id: string) {
+    return await this.ingredientsModel.findOne({ id });
+  }
+
+  async updateIngredient(id: string, ingredientDto: IngredientDTO) {
+    const response = this.ingredientsModel.findOneAndUpdate(
+      { id },
+      ingredientDto,
+      { new: true, upsert: true }
+    );
+    return response;
   }
 
   async removeIngredient(id: string) {
