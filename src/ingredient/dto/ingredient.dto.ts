@@ -18,5 +18,6 @@ export class IngredientDTO{
   @IsBoolean()
   @IsNotEmpty()
   readonly inStock: boolean;
+  @ApiProperty()
   readonly image: string;
 }
