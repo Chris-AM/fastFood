@@ -1,13 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { v4 as uuidv4 } from 'uuid';
+//import { v4 as uuidv4 } from 'uuid';
 
 export type UsersDocument = Users & Document;
 
 @Schema({ timestamps: true })
 export class Users {
-  @Prop({ unique: true, default: uuidv4 })
-  id: string;
+  // @Prop({ unique: true, default: uuidv4 })
+  // id: string;
   @Prop({ required: true })
   name: string;
   @Prop({ required: true, unique: true })
@@ -29,6 +29,6 @@ export class Users {
 export const UsersSchema = SchemaFactory.createForClass(Users);
 
 UsersSchema.method('toJSON', function () {
-  const { __v, _id, ...object } = this.toObject();
+  const { __v, ...object } = this.toObject();
   return object;
 });

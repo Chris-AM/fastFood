@@ -15,9 +15,9 @@ export class Products {
   price: number;
   @Prop({ required: true })
   description: string;
-  @Prop({ required: true })
+  @Prop({ default: null })
   photo: string;
-  @Prop({ required: true, ref: 'Ingredients' })
+  @Prop({ ref: 'Ingredients' })
   ingredients: string[];
 }
 
