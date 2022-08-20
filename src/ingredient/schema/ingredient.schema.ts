@@ -1,14 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-//import { v4 as uuidv4 } from 'uuid';
 import { IngredientType } from './ingredient.enum';
 
 export type IngredientsDocument = Ingredients & Document;
 
 @Schema({timestamps: true})
 export class Ingredients {
-  // @Prop({ unique: true, default: uuidv4 })
-  // id: string;
   @Prop({ required: true, unique: true })
   name: string;
   @Prop({ required: true, enum: IngredientType })
@@ -28,3 +25,5 @@ IngredientSchema.method('toJSON', function () {
   const { __v, ...object } = this.toObject();
   return object;
 });
+
+IngredientSchema.index({ name: 1 });
