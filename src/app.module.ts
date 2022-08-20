@@ -12,6 +12,7 @@ import { join } from "path";
 import { EventEmailModule } from './event-email/event-email.module';
 import { EventEmitterModule } from "@nestjs/event-emitter";
 import { EmailsModule } from './emails/emails.module';
+import { DrinksModule } from './drinks/drinks.module';
 
 @Module({
   imports: [ 
@@ -32,6 +33,7 @@ import { EmailsModule } from './emails/emails.module';
     ShoppingCartModule,
     EventEmailModule,
     EmailsModule,
+    DrinksModule,
   ],
 })
 
