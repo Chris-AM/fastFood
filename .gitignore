@@ -34,7 +34,14 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
+#uploaded imgs
+/public/*.jpeg
+/public/*.jpg
+/public/*.png
+/public/*.webp
 # env and project docs
 .env
 .env.development
-package-lock.json
+
+.package-lock.json
+
