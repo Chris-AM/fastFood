@@ -1,5 +1,6 @@
 import {ApiProperty} from "@nestjs/swagger";
-import { IsNotEmpty, IsNumber, IsString, } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString, IsUUID, } from "class-validator";
+import { IngredientDTO } from "src/ingredient/dto/ingredient.dto";
 
 export class ProductDTO{
   @ApiProperty()
@@ -15,11 +16,8 @@ export class ProductDTO{
   @IsNotEmpty()
   readonly description: string;
   @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
   readonly photo: string;
   @ApiProperty()
-  @IsString()
   @IsNotEmpty()
-  readonly ingredients: string[];
+  readonly ingredients: IngredientDTO[];
 }
