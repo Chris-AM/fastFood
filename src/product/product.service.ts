@@ -18,9 +18,15 @@ export class ProductService {
     ingredientId: string[], 
     productDTO: ProductDTO
   ): Promise<ProductsDocument> {
-    const ingredients = await this.ingredientsModel.find({ _id: { $in: ingredientId } });
+    const ingredients = await this.ingredientsModel.find(
+      { _id: { $in: ingredientId } }
+    );
+    console.log('ingredients', ingredients);
     if(!ingredients) {
-      throw new HttpException('One or more ingredients not found', HttpStatus.NOT_FOUND);
+      throw new HttpException(
+        'One or more ingredients not found', 
+        HttpStatus.NOT_FOUND
+      );
     }
     const product = new this.productsModel(productDTO);
     product.ingredients = ingredients;
