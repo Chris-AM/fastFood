@@ -9,7 +9,7 @@ import {
   HttpCode,
   Delete,
   Param,
-  Patch,
+  Put,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
@@ -65,7 +65,7 @@ export class IngredientController {
     return this.ingredientService.getIngredientById(id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   @HttpCode(200)
   @Role(['admin'])
   updateIngredient(
