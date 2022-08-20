@@ -1,60 +1,65 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ShoppingCartDTO } from './dto/shopping-cart.dto';
-import { Orders } from './schema/shopping-cart.schema';
+import { Orders, OrdersDocument } from './schema/shopping-cart.schema';
+import { Menus } from '../menu/schema/menu.schema';
+import { Products } from '../product/schema/product.schema';
+import { Drinks } from '../drinks/schema/drink.schema';
 
+interface ModelExt<T> extends Model<T> {
+  getAllOrders: Function;
+}
 @Injectable()
 export class ShoppingCartService {
   constructor(
     @InjectModel(Orders.name)
-    private model: Model<Orders>
-  ){}
-
-  async postMenuToOrder(
-    orderId: string,
-    menuId: any
-  ) {
-    const menusInOrder = await this.model
-    .findByIdAndUpdate(
-      orderId,
-      {
-        $addToSet: { menus: menuId },
-      },
-      { new: true },
-    ).populate('menus')
-    return menusInOrder;
-  }
-
-  async postProductToOrder(
-    orderId: string,
-    productId: any,
-  ) {
-    const productsInOrder = await this.model
-    .findByIdAndUpdate(
-      orderId,
-      {
-        $addToSet: { products: productId },
-      },
-      {
-        new: true
-      }
-    ).populate('products');
-    return productsInOrder;
-  }
+    private ordersModel: ModelExt<Orders>,
+    @InjectModel(Menus.name)
+    private menusModel: Model<Menus>,
+    @InjectModel(Products.name)
+    private productsModel: Model<Products>,
+    @InjectModel(Drinks.name)
+    private drinksModel: Model<Drinks>,
+  ) {}
 
   async createOrder(
-    shoppingCartDto: ShoppingCartDTO
-  ) {
-    const newOrder = new this.model(shoppingCartDto);
-    return await newOrder.save();
-  }
-  
-  async getAllOrders() {
-    return await this.model.find().populate('menus').populate('products');
+    menuId: string[],
+    productId: string[],
+    drinkId: string[],
+    shoppingCartDTO: ShoppingCartDTO,
+  ): Promise<OrdersDocument> {
+    const menus = await this.menusModel.find({
+      _id: { $in: menuId },
+    });
+    const products = await this.productsModel.find({
+      _id: { $in: productId },
+    });
+    const drinks = await this.drinksModel.find({
+      _id: { $in: drinkId },
+    });
+    if (!menus || !products || !drinks) {
+      throw new HttpException(
+        'One or more products or drinks or menus not found',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    const order = new this.ordersModel(shoppingCartDTO);
+    order.menus = menus;
+    order.products = products;
+    order.drinks = drinks;
+    return await order.save();
   }
 
-  async getOrderById(id: string) {
-    return await this.model.findById(id);
+  async getAllOrders(): Promise<OrdersDocument[]> {
+    return this.ordersModel.getAllOrders();
   }
+
+  async getOrderById(
+    id: string
+  ): Promise<OrdersDocument> {
+    return await this.ordersModel.findById(id);
+  }
+
+  
 }
