@@ -15,6 +15,7 @@ import { Drinks, DrinksSchema } from './schema/drink.schema';
     ]),
   ],
   controllers: [DrinksController],
-  providers: [DrinksService]
+  providers: [DrinksService],
+  exports: [DrinksService],
 })
 export class DrinksModule {}
