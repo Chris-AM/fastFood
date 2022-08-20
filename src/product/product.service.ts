@@ -42,4 +42,35 @@ export class ProductService {
     return await this.productsModel.find();
   }
   
+  async getProductById(
+    id: string
+  ): Promise<ProductsDocument> {
+    try {
+      return await this.productsModel.findById(id);
+    } catch (error) {
+      throw new HttpException("Product not found", HttpStatus.NOT_FOUND);
+    }
+  }
+
+  async updateProduct(
+    id: string,
+    ingredientId: string[],
+    productDTO: ProductDTO,
+  ): Promise<ProductsDocument> {
+    const ingredients = await this.ingredientsModel.find({ _id: { $in: ingredientId } });
+    if(!ingredients) {
+      throw new HttpException('One or more ingredients not found', HttpStatus.NOT_FOUND);
+    }
+    return await this.productsModel.findByIdAndUpdate(
+      id,
+      { ...productDTO, ingredients },
+      { new: true, upsert: true }
+    );
+  }
+
+  async deleteProduct(
+    id: string
+  ): Promise<ProductsDocument> {
+    return await this.productsModel.findByIdAndDelete(id);
+  }
 }

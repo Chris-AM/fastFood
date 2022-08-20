@@ -5,6 +5,7 @@ import {
   HttpCode,
   Param,
   Post,
+  Put,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -53,5 +54,25 @@ export class ProductController {
   @Role(['admin', 'user'])
   getAllProducts() {
     return this.productService.getAllProducts();
+  }
+
+  @Get(':id')
+  @HttpCode(200)
+  @Role(['admin', 'user'])
+  getProductById(
+    @Param('id') id: string,
+  ) {
+    return this.productService.getProductById(id);
+  }
+
+  @Put(':id')
+  @HttpCode(200)
+  @Role(['admin'])
+  updateProduct(
+    @Param('id') id: string,
+    @Body('ingredients') ingredientId: string[],
+    @Body() productDTO: ProductDTO,
+  ) {
+    return this.productService.updateProduct(id, ingredientId, productDTO);
   }
 }
