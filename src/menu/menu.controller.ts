@@ -1,34 +1,35 @@
 import {
   Body, 
   Controller, 
-  Delete, 
-  Get, 
-  HttpException, 
-  HttpStatus, 
-  Param, 
+  HttpCode, 
   Post,
-  Put,
   UseGuards
 } from '@nestjs/common';
 import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';
+import { Role } from 'src/common/decorators/role.decorator';
 import { JwtAgentGuard } from 'src/common/guards/jwt-agent.guard';
-import {ProductService} from 'src/product/product.service';
+import { RoleAgentGuard } from 'src/common/guards/role-agent.guard';
 import {MenuDTO} from './dto/menu.dto';
 import {MenuService} from './menu.service';
 
-@UseGuards(JwtAgentGuard)
 @ApiBearerAuth()
 @ApiTags('menu')
 @Controller('menu')
+@UseGuards(JwtAgentGuard, RoleAgentGuard)
 export class MenuController {
   constructor(
     private readonly menuService: MenuService,
-    private readonly productService: ProductService
   ) {}
 
   @Post()
-  createMenu( @Body() menuDto: MenuDTO ){
-    return this.menuService.createMenu(menuDto);
+  @HttpCode(201)
+  @Role(['admin'])
+  createMenu( 
+    @Body() menuDto: MenuDTO,
+    @Body('products') productId: string[],
+    @Body('drinks') drinkId: string[],
+  ) {
+    return this.menuService.createMenu(productId, drinkId, menuDto);
   }
 
 }

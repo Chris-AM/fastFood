@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
 import { ProductsDocument } from 'src/product/schema/product.schema';
+import { DrinksDocument } from '../../drinks/schema/drink.schema';
 
 export type MenusDocument = Menus & Document;
 
@@ -12,10 +13,12 @@ export class Menus {
   price: number;
   @Prop({ required: true })
   description: string;
-  @Prop({ required: true })
+  @Prop({ default: null })
   photo: string;
-  @Prop({ required: true, type: MongooseSchema.Types.Array })
+  @Prop({ req: true, ref: 'Products' })
   products: ProductsDocument[];
+  @Prop({ req: true, ref: 'Drinks' })
+  drinks: DrinksDocument[];
 }
 
 export const MenuSchema = SchemaFactory.createForClass(Menus);
