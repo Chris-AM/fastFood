@@ -42,8 +42,10 @@ export class IngredientController {
   @HttpCode(201)
   @Role(['admin'])
   @UseInterceptors(FileInterceptor('img', { storage }))
-  uploadImage(@Param('id') id: string, @UploadedFile() file: Express.Multer.File) {
-    console.log(id, file.filename)
+  uploadImage(
+    @Param('id') id: string, 
+    @UploadedFile() file: Express.Multer.File
+  ) {
     this.ingredientService.uploadImage(id, file.filename);
   }
 
@@ -57,21 +59,28 @@ export class IngredientController {
   @Get(':id')
   @HttpCode(200)
   @Role(['admin' , 'user'])
-  getIngredientById(@Param('id') id: string) {
+  getIngredientById(
+    @Param('id') id: string
+  ) {
     return this.ingredientService.getIngredientById(id);
   }
 
   @Patch(':id')
   @HttpCode(200)
   @Role(['admin'])
-  updateIngredient(@Param('id') id: string, @Body() ingredientDto: IngredientDTO) {
+  updateIngredient(
+    @Param('id') id: string, 
+    @Body() ingredientDto: IngredientDTO
+  ) {
     return this.ingredientService.updateIngredient(id, ingredientDto);
   }
 
   @Delete(':id')
   @HttpCode(200)
   @Role(['admin'])
-  removeIngredient(@Param('id') id: string) {
+  removeIngredient(
+    @Param('id') id: string
+  ) {
     return this.ingredientService.removeIngredient(id);
   }
 }

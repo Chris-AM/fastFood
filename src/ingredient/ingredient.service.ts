@@ -20,38 +20,48 @@ export class IngredientService {
     }
   }
 
-  async uploadImage(id: string, fileName: string){
+  async uploadImage(
+    id: string, 
+    fileName: string
+  ): Promise<IngredientsDocument> {
     try {
-    return this.ingredientsModel.findOneAndUpdate(
-      { id },
+    return this.ingredientsModel.findByIdAndUpdate(
+      id,
       { image: fileName },
       { new: true, upsert: true }
     );
     } catch (error) {
+      error
       console.log(error)      
     }
   }
   
-  async getAllIngredients() {
+  async getAllIngredients(): Promise<IngredientsDocument[]> {
     return await this.ingredientsModel.find();
   }
 
-  async getIngredientById(id: string) {
+  async getIngredientById(
+    id: string
+  ): Promise<IngredientsDocument> {
     return await this.ingredientsModel.findOne({ id });
   }
 
-  async updateIngredient(id: string, ingredientDto: IngredientDTO) {
-    const response = this.ingredientsModel.findOneAndUpdate(
-      { id },
+  async updateIngredient(
+    id: string, 
+    ingredientDto: IngredientDTO
+  ): Promise<IngredientsDocument> {
+    const response = this.ingredientsModel.findByIdAndUpdate(
+      id,
       ingredientDto,
       { new: true, upsert: true }
     );
     return response;
   }
 
-  async removeIngredient(id: string) {
-    const _id = new Types.ObjectId(id);
-    const response = this.ingredientsModel.deleteOne({ _id });
+  async removeIngredient(
+    id: string
+  ): Promise<IngredientsDocument> {
+    const response = this.ingredientsModel.findByIdAndDelete(id);
     return response;
   }
 
