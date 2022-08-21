@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+  nest: 
+    container_name: fast_food
+    build:
+      context: ./
+    restart: always
+    ports:
+      - 8080:3000
+    environment:
+      - NODE_ENV=production
+      - NODE_PATH=/usr/src/app/node_modules
+      - URI_MONGODB=mongodb+srv://db_admin:Lnohe11Zjf1VzsAz@fastfood.jp9uu.mongodb.net/test
+      - JWT_SECRET=j074d0bl3VteZee3kret
+    depends_on:
+      - mongo
+    links:
+      - mongo
+  mongo:
+    image: mongo
+    container_name: fast_food_mongo
+    restart: always
+    ports:
+      - "27019:27017"
+    expose:
+      - 27019

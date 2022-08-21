@@ -1,9 +1,28 @@
-FROM node:18
+FROM node:18-alpine as development
 
 WORKDIR /app
 
-RUN package.json .
+COPY tsconfig*.json ./
+COPY package*.json ./
+COPY nest-cli*.json ./
 
-COPY npm install
+RUN npm ci
 
-CMD ["node" , "src/main,js"]
+COPY src/ src/
+
+RUN npm run build
+
+# Runtime (production) Layer
+FROM node:18-alpine as production
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm ci --omit=devDependencies
+
+COPY --from=development /app/dist/ ./dist/
+
+EXPOSE 3000
+
+CMD ["node", "dist/main.js"]
