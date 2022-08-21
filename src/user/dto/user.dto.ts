@@ -15,8 +15,6 @@ export class UserDTO{
   @IsString()
   readonly adress: string;
   @ApiProperty()
-  // @IsNotEmpty()
-  @IsString()
   readonly phoneCode: string; //default: +569
   @ApiProperty()
   @IsNotEmpty()
@@ -26,4 +24,7 @@ export class UserDTO{
   @IsNotEmpty()
   @IsString()
   readonly password: string;
+  @ApiProperty()
+  @IsString()
+  readonly role: string[]; //default: user
 }
