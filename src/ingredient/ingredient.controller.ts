@@ -10,6 +10,7 @@ import {
   Delete,
   Param,
   Put,
+  CacheInterceptor,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
@@ -52,6 +53,7 @@ export class IngredientController {
   @Get()
   @HttpCode(200)
   @Role(['admin', 'user'])
+  @UseInterceptors(CacheInterceptor)
   getAllIngredients() {
     return this.ingredientService.getAllIngredients();
   }

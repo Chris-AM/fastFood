@@ -1,5 +1,6 @@
 import {
   Body,
+  CacheInterceptor,
   Controller,
   Get,
   HttpCode,
@@ -8,6 +9,7 @@ import {
   Param,
   Post,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';
 import { ShoppingCartService } from './shopping-cart.service';
@@ -40,6 +42,7 @@ export class ShoppingCartController {
   @Get()
   @HttpCode(200)
   @Role(['admin'])
+  @UseInterceptors(CacheInterceptor)
   async getAllOrders() {
     return this.shoppingCartService.getAllOrders();
   }

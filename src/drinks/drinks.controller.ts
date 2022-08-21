@@ -10,6 +10,7 @@ import {
   UseInterceptors,
   UploadedFile,
   Put,
+  CacheInterceptor,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
@@ -51,6 +52,7 @@ export class DrinksController {
   @Get()
   @HttpCode(200)
   @Role([ 'admin', 'user' ])
+  @UseInterceptors(CacheInterceptor)
   findAll() {
     return this.drinksService.findAllDrinks();
   }

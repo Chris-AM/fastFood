@@ -1,5 +1,6 @@
 import {
   Body, 
+  CacheInterceptor, 
   Controller, 
   Delete, 
   Get, 
@@ -54,6 +55,7 @@ export class MenuController {
   @Get()
   @HttpCode(200)
   @Role(['admin', 'user'])
+  @UseInterceptors(CacheInterceptor)
   getAllMenus() {
     return this.menuService.getAllMenus();
   }

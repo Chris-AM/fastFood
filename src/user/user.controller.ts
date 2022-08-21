@@ -1,4 +1,5 @@
 import { Body, 
+  CacheInterceptor, 
   Controller, 
   Delete, 
   Get, 
@@ -6,7 +7,8 @@ import { Body,
   Param, 
   Post, 
   Put, 
-  UseGuards
+  UseGuards,
+  UseInterceptors
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UserDTO } from './dto/user.dto';
@@ -35,6 +37,7 @@ export class UserController {
   @Get()
   @HttpCode(200)
   @Role(['manager', 'admin'])
+  @UseInterceptors(CacheInterceptor)
   getAllUsers() {
     return this.userService.getAllUsers();
   }

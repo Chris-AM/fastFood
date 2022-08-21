@@ -1,5 +1,6 @@
 import {
   Body,
+  CacheInterceptor,
   Controller,
   Get,
   HttpCode,
@@ -52,6 +53,7 @@ export class ProductController {
   @Get()
   @HttpCode(200)
   @Role(['admin', 'user'])
+  @UseInterceptors(CacheInterceptor)
   getAllProducts() {
     return this.productService.getAllProducts();
   }
