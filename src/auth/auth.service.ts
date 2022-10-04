@@ -1,12 +1,13 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Users, UsersDocument } from 'src/user/schema/user.schema';
-import { LoginAuthDto } from './dto/login-auth.dto';
-import { RegisterAuthDto } from './dto/register-auth.dto';
-import { comparePassToHash, plainToHash } from './utils/handleBCrypt';
 import { JwtService } from '@nestjs/jwt';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+
+import { LoginAuthDto } from './dto/login-auth.dto';
+import { comparePassToHash, plainToHash } from './utils/handleBCrypt';
+import { RegisterAuthDto } from './dto/register-auth.dto';
+import { Users, UsersDocument } from 'src/user/schema/user.schema';
 
 @Injectable()
 export class AuthService {

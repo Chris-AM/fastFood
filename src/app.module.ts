@@ -21,7 +21,7 @@ import { SocketProvider } from './providers/socket-provider';
       rootPath: join(__dirname, '..', 'public'),
     }),
     ConfigModule.forRoot({
-      envFilePath: ['.env.development'],
+      envFilePath: ['.env'],
       isGlobal: true,
     }),
     CacheModule.register({

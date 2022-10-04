@@ -57,7 +57,6 @@ export class GoogleService {
 
         this.eventEmiiter.emit('user.logged', data);
 
-        console.log('debug data', data);
         return data;
     }
 }

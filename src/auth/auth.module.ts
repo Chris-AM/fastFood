@@ -7,6 +7,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Users, UsersSchema } from 'src/user/schema/user.schema';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategy/jwt.strategy';
+import { GoogleService } from './social-logins/google.service';
+import { FacebookService } from './social-logins/facebook.service';
 
 @Module({
   imports: [
@@ -28,6 +30,11 @@ import { JwtStrategy } from './strategy/jwt.strategy';
     ]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  providers: [
+    AuthService, 
+    JwtStrategy, 
+    GoogleService, 
+    FacebookService,
+  ],
 })
 export class AuthModule {}
