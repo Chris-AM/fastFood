@@ -8,6 +8,7 @@ import { LoginAuthDto } from './dto/login-auth.dto';
 import { comparePassToHash, plainToHash } from './utils/handleBCrypt';
 import { RegisterAuthDto } from './dto/register-auth.dto';
 import { Users, UsersDocument } from 'src/user/schema/user.schema';
+import { MaintainerRegisterAuthDto } from './dto/maintainer-register-dto';
 
 @Injectable()
 export class AuthService {
@@ -30,6 +31,18 @@ export class AuthService {
     this.eventEmiiter.emit('user.created', newUser);
 
     return newUser;
+  }
+
+  public async registryFromMaintainer(userBody: MaintainerRegisterAuthDto) {
+    const { password, role, ...user } = userBody;
+    const parsedUser = {
+      ...user,
+      password: await plainToHash(password),
+      role: ['admin']
+    };
+    const newAdminUser = await this.userModel.create(parsedUser);
+    this.eventEmiiter.emit('user.created', newAdminUser);
+    return newAdminUser;    
   }
 
   public async login(userLoginBody: LoginAuthDto) {

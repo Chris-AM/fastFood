@@ -9,6 +9,7 @@ import { Request } from 'express';
 
 import { AuthService } from './auth.service';
 import { LoginAuthDto } from './dto/login-auth.dto';
+import {MaintainerRegisterAuthDto} from './dto/maintainer-register-dto';
 import { RegisterAuthDto } from './dto/register-auth.dto';
 import { GoogleService } from './social-logins/google.service';
 
@@ -29,6 +30,13 @@ export class AuthController {
   @Post('register')
   handleRegistry(@Body() userBody: RegisterAuthDto) {
     return this.authService.register(userBody);
+  }
+
+  @Post('maintainer/register')
+  handleMaintainerRegistry(
+    @Body() userBody: MaintainerRegisterAuthDto
+  ) {
+    return this.authService.registryFromMaintainer(userBody);
   }
 
   @Post('google-auth')
