@@ -40,7 +40,6 @@ OrdersSchema.statics.getAllOrders = async function () {
             $project: {
               _id: 0,
               name: 1,
-              adress: 1,
               phoneNumber: 1,
             },
           },

@@ -30,7 +30,6 @@ export class GoogleService {
         const userToCreate = {
             name: googleUser.name,
             email: googleUser.email,
-            adress: 'Desde google',
             phoneNumber: 0,
             password: await plainToHash(token),
             avatar: googleUser.picture,

@@ -11,10 +11,6 @@ export class UserDTO{
   @IsEmail()
   readonly email: string;
   @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  readonly adress: string;
-  @ApiProperty()
   readonly phoneCode: string; //default: +569
   @ApiProperty()
   @IsNotEmpty()
