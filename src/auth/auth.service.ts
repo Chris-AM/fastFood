@@ -28,9 +28,23 @@ export class AuthService {
 
     const newUser = await this.userModel.create(parsedUser);
 
-    this.eventEmiiter.emit('user.created', newUser);
 
-    return newUser;
+    const flatUser = newUser.toObject();
+    const payload = { id: flatUser._id }
+    try {
+      const token = this.jwtService.sign(payload);
+      const data = {
+        token,
+        user: flatUser,
+      };
+      this.eventEmiiter.emit('user.created', data);
+      return data;
+    } catch (error) {
+      console.log('debug error', error);
+    }
+
+
+  
   }
 
   public async registryFromMaintainer(userBody: MaintainerRegisterAuthDto) {
@@ -52,9 +66,12 @@ export class AuthService {
     });
     if (!doesUserExist)
       throw new HttpException('Password or mail invalid', HttpStatus.NOT_FOUND);
+
     const isCheck = await comparePassToHash(password, doesUserExist.password);
+
     if (!isCheck)
       throw new HttpException('Password or mail invalid', HttpStatus.NOT_FOUND);
+
     const flatUser = doesUserExist.toObject();
     delete flatUser.password;
 
