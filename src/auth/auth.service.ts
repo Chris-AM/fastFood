@@ -17,7 +17,7 @@ export class AuthService {
     private readonly eventEmiiter: EventEmitter2,
     @InjectModel(Users.name)
     private readonly userModel: Model<UsersDocument>,
-  ) {}
+  ) { }
 
   public async register(userBody: RegisterAuthDto) {
     const { password, ...user } = userBody;
@@ -26,8 +26,18 @@ export class AuthService {
       password: await plainToHash(password),
     };
 
-    const newUser = await this.userModel.create(parsedUser);
+    const doesUserExist = await this.userModel.findOne({
+      email: userBody.email,
+    });
 
+    if (doesUserExist) {
+      throw new HttpException(
+        'Mail already in use',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    const newUser = await this.userModel.create(parsedUser);
 
     const flatUser = newUser.toObject();
     const payload = { id: flatUser._id }
@@ -43,8 +53,6 @@ export class AuthService {
       console.log('debug error', error);
     }
 
-
-  
   }
 
   public async registryFromMaintainer(userBody: MaintainerRegisterAuthDto) {
@@ -54,9 +62,31 @@ export class AuthService {
       password: await plainToHash(password),
       role: ['admin']
     };
+
+    const doesUserExist = await this.userModel.findOne({
+      email: userBody.email,
+    });
+
+    if (doesUserExist) {
+      throw new HttpException(
+        'Mail already in use',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
     const newAdminUser = await this.userModel.create(parsedUser);
-    this.eventEmiiter.emit('user.created', newAdminUser);
-    return newAdminUser;    
+    const flatUser = newAdminUser.toObject();
+    const payload = { id: flatUser._id }
+    try {
+      const token = this.jwtService.sign(payload);
+      const data = {
+        token,
+        user: flatUser,
+      };
+      this.eventEmiiter.emit('user.created', data);
+      return data;
+    } catch (error) {
+      console.log('debug error', error);
+    }
   }
 
   public async login(userLoginBody: LoginAuthDto) {
