@@ -9,7 +9,6 @@ import { MenuModule } from './menu/menu.module';
 import { ShoppingCartModule } from './shopping-cart/shopping-cart.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { EventEmailModule } from './event-email/event-email.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { EmailsModule } from './emails/emails.module';
 import { DrinksModule } from './drinks/drinks.module';
@@ -37,7 +36,6 @@ import { SocketProvider } from './providers/socket-provider';
     IngredientModule,
     MenuModule,
     ShoppingCartModule,
-    EventEmailModule,
     EmailsModule,
     DrinksModule,
   ],
