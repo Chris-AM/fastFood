@@ -24,6 +24,10 @@ export class Users {
   avatar: string;
   @Prop({ default: ['user'] })
   role: string[];
+  @Prop({ default: false })
+  google: boolean;
+  @Prop({ default: false })
+  facebook: boolean;
 }
 
 export const UsersSchema = SchemaFactory.createForClass(Users);

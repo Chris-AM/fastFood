@@ -3,7 +3,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { JwtService } from '@nestjs/jwt';
 import { OAuth2Client } from 'google-auth-library';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Document, Model, Types } from 'mongoose';
 
 import { plainToHash } from '../utils/handleBCrypt';
 import { Users, UsersDocument } from 'src/user/schema/user.schema';
@@ -19,6 +19,7 @@ export class GoogleService {
     ) { }
 
     async googleAuth(token: string, request: Request) {
+        console.log('debug token', token);
         const googleId = process.env.GOOGLE_ID;
         const client = new OAuth2Client(googleId);
         const ticket = await client.verifyIdToken({
@@ -33,17 +34,23 @@ export class GoogleService {
             phoneNumber: 0,
             password: await plainToHash(token),
             avatar: googleUser.picture,
+            google: true
         };
-        let user = await this.userModel.findOne({
+        const userDB = await this.userModel.findOne({
             email: googleUser.email,
         });
-
+        let user: Users & Document<any, any, any> & {
+            _id: Types.ObjectId;
+        };
         if (!googleUser) {
             throw new UnauthorizedException();
         }
 
-        if (!user) {
+        if (!userDB) {
             user = await this.userModel.create(userToCreate);
+        } else {
+            user = userDB;
+            user.google = true;
         }
 
         const flatUser = user.toObject();
