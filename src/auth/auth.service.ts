@@ -31,15 +31,10 @@ export class AuthService {
     });
 
     if (doesUserExist) {
-      const error = new HttpException(
+      throw new HttpException(
         'Mail already in use',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.BAD_REQUEST
       );
-      const message = 'mail already in use';
-      return {
-        message,
-        error,
-      }
     }
 
     const newUser = await this.userModel.create(parsedUser);
@@ -73,15 +68,10 @@ export class AuthService {
     });
 
     if (doesUserExist) {
-      const error = new HttpException(
+      throw new HttpException(
         'Mail already in use',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.BAD_REQUEST
       );
-      const message = 'mail already in use';
-      return {
-        message,
-        error,
-      }
     }
     const newAdminUser = await this.userModel.create(parsedUser);
     const flatUser = newAdminUser.toObject();
