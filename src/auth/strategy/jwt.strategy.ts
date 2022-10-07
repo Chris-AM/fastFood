@@ -6,7 +6,10 @@ import { Users, UsersDocument } from '../../user/schema/user.schema';
 import { Model } from 'mongoose';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class JwtStrategy extends PassportStrategy(
+    Strategy,
+    'jwt-access',
+    ) {
     constructor(
         @InjectModel(Users.name)
         private readonly userModel: Model<UsersDocument>) {
