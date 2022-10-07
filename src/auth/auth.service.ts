@@ -145,8 +145,8 @@ export class AuthService {
     response: Response
     ) {
     try {
-      const refreshToken = request.cookies['refresh-token'];
-      const { id } = await this.jwtService.verifyAsync(refreshToken);
+      const refreshToken = request.headers['x-token'];
+      const { id } = await this.jwtService.verifyAsync(refreshToken.toString());
       console.log('id ===> ', id)
       const token = await this.jwtService.signAsync(
         { id }, 

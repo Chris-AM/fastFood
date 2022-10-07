@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
   Req,
   Res,
@@ -36,7 +37,7 @@ export class AuthController {
     return this.authService.register(userBody);
   }
 
-  @Post('refresh')
+  @Get('refresh')
   refresh(
     @Req() request: Request,
     @Res({ passthrough: true }) response: Response
