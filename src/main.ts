@@ -1,6 +1,7 @@
 import { ValidationPipe, VersioningType } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import * as cookieParser from "cookie-parser";
 import { AppModule } from "./app.module";
 import { AllExceptionFilter } from "./common/filters/http-exception.filter";
 import {LoggerInterceptor} from "./common/interceptors/logger.interceptor";
@@ -16,6 +17,7 @@ async function fastoodBackend() {
     defaultVersion: '1',
     type: VersioningType.URI,
   });
+  app.use(cookieParser());
   app.useGlobalFilters(new AllExceptionFilter());
   app.useGlobalInterceptors(new TimeOutInterceptor());
   app.useGlobalInterceptors(new LoggerInterceptor());

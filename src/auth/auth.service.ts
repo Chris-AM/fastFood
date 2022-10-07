@@ -1,8 +1,14 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { JwtService } from '@nestjs/jwt';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { Response, Request } from 'express';
 
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { comparePassToHash, plainToHash } from './utils/handleBCrypt';
@@ -32,15 +38,15 @@ export class AuthService {
 
     if (doesUserExist) {
       throw new HttpException(
-        'Mail already in use',
+        'Mail already in use', 
         HttpStatus.BAD_REQUEST
-      );
+        );
     }
 
     const newUser = await this.userModel.create(parsedUser);
 
     const flatUser = newUser.toObject();
-    const payload = { id: flatUser._id }
+    const payload = { id: flatUser._id };
     try {
       const token = this.jwtService.sign(payload);
       const data = {
@@ -52,15 +58,16 @@ export class AuthService {
     } catch (error) {
       console.log('debug error', error);
     }
-
   }
 
-  public async registryFromMaintainer(userBody: MaintainerRegisterAuthDto) {
+  public async registryFromMaintainer(
+    userBody: MaintainerRegisterAuthDto
+    ) {
     const { password, role, ...user } = userBody;
     const parsedUser = {
       ...user,
       password: await plainToHash(password),
-      role: ['admin']
+      role: ['admin'],
     };
 
     const doesUserExist = await this.userModel.findOne({
@@ -69,13 +76,13 @@ export class AuthService {
 
     if (doesUserExist) {
       throw new HttpException(
-        'Mail already in use',
+        'Mail already in use', 
         HttpStatus.BAD_REQUEST
-      );
+        );
     }
     const newAdminUser = await this.userModel.create(parsedUser);
     const flatUser = newAdminUser.toObject();
-    const payload = { id: flatUser._id }
+    const payload = { id: flatUser._id };
     try {
       const token = this.jwtService.sign(payload);
       const data = {
@@ -89,7 +96,10 @@ export class AuthService {
     }
   }
 
-  public async login(userLoginBody: LoginAuthDto) {
+  public async login(
+    userLoginBody: LoginAuthDto, 
+    response: Response
+    ) {
     const { password } = userLoginBody;
     const doesUserExist = await this.userModel.findOne({
       email: userLoginBody.email,
@@ -107,15 +117,45 @@ export class AuthService {
 
     const payload = { id: flatUser._id };
 
-    const token = this.jwtService.sign(payload);
+    const accessToken = await this.jwtService.signAsync(
+      payload, { expiresIn: '30s' }
+    );
+
+    console.log('debug accessToken', accessToken);
+
+    const refreshToken = await this.jwtService.signAsync(payload);
+
+    response.cookie('refresh-token', refreshToken, {
+      httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
 
     const data = {
-      token,
+      token: accessToken,
       user: flatUser,
     };
 
     this.eventEmiiter.emit('user.logged', data);
 
     return data;
+  }
+
+  public async refresh(
+    request: Request, 
+    response: Response
+    ) {
+    try {
+      const refreshToken = request.cookies['refresh-token'];
+      const { id } = await this.jwtService.verifyAsync(refreshToken);
+      console.log('id ===> ', id)
+      const token = await this.jwtService.signAsync(
+        { id }, 
+        { expiresIn: '30s' }
+      );
+      console.log('token ===>', token);
+      return { token };
+    } catch (error) {
+      throw new UnauthorizedException();
+    }
   }
 }
