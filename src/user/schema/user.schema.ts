@@ -26,6 +26,8 @@ export class Users {
   google: boolean;
   @Prop({ default: false })
   facebook: boolean;
+  @Prop()
+  refreshToken: string;
 }
 
 export const UsersSchema = SchemaFactory.createForClass(Users);

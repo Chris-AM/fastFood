@@ -22,5 +22,8 @@ export class UserDTO{
   readonly password: string;
   @ApiProperty()
   @IsString()
-  readonly role: string[]; //default: user
+  readonly role: string[];
+  @ApiProperty()
+  @IsString()
+  readonly refreshToken: string;
 }
