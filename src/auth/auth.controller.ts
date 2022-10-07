@@ -55,9 +55,9 @@ export class AuthController {
   @Post('google-auth')
   async googleAuth(
     @Body('token') token: string,
-    @Res({ passthrough: true }) request: Request,
+    @Res({ passthrough: true }) response: Response,
   ) {
-    return this.googleService.googleAuth(token, request);
+    return this.googleService.googleAuth(token, response);
   }
 
 }

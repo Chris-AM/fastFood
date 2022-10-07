@@ -7,7 +7,7 @@ import { Document, Model, Types } from 'mongoose';
 
 import { plainToHash } from '../utils/handleBCrypt';
 import { Users, UsersDocument } from 'src/user/schema/user.schema';
-import { Request } from 'express';
+import { Response } from 'express';
 
 @Injectable()
 export class GoogleService {
@@ -18,8 +18,7 @@ export class GoogleService {
         private readonly userModel: Model<UsersDocument>,
     ) { }
 
-    async googleAuth(token: string, request: Request) {
-        console.log('debug token', token);
+    async googleAuth(token: string, request: Response) {
         const googleId = process.env.GOOGLE_ID;
         const client = new OAuth2Client(googleId);
         const ticket = await client.verifyIdToken({

@@ -147,13 +147,12 @@ export class AuthService {
     try {
       const refreshToken = request.headers['x-token'];
       const { id } = await this.jwtService.verifyAsync(refreshToken.toString());
-      console.log('id ===> ', id)
       const token = await this.jwtService.signAsync(
         { id }, 
         { expiresIn: '30s' }
       );
-      console.log('token ===>', token);
-      return { token };
+      const userToken = await this.userModel.findById(id);
+      return { token, user: userToken };
     } catch (error) {
       throw new UnauthorizedException();
     }
