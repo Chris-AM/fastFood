@@ -15,13 +15,13 @@ RUN npm run build
 # Runtime (production) Layer
 FROM node:18-alpine as production
 
-WORKDIR /app
+WORKDIR /usr/src/app
 
 COPY package*.json ./
 
 RUN npm ci --omit=devDependencies
 
-COPY --from=development /app/dist/ ./dist/
+COPY --from=development  /usr/src/app/dist/ ./dist/
 
 EXPOSE 3000
 
