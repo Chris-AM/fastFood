@@ -3,8 +3,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-
 import { NgChartsModule } from 'ng2-charts';
+import { HttpClientModule } from '@angular/common/http';
 
 //own_modules
 import { SharedModule } from '../shared/shared.module';
@@ -52,7 +52,8 @@ import { AccountSettingsComponent } from './account-settings/account-settings.co
     SharedModule,
     FormsModule,
     ComponentsModule,
-    NgChartsModule
+    NgChartsModule,
+    HttpClientModule,
   ],
 })
 export class PagesModule {}
