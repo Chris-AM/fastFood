@@ -18,7 +18,7 @@ export class Users {
   phoneNumber: number;
   @Prop({ required: true })
   password: string;
-  @Prop()
+  @Prop({ default: 'no-img' })
   avatar: string;
   @Prop({ default: ['user'] })
   role: string[];

@@ -21,7 +21,6 @@ export class ProductService {
     const ingredients = await this.ingredientsModel.find(
       { _id: { $in: ingredientId } }
     );
-    console.log('ingredients', ingredients);
     if(!ingredients) {
       throw new HttpException(
         'One or more ingredients not found', 

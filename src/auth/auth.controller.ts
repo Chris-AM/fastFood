@@ -1,11 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Req,
-  Res,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 
@@ -22,12 +15,12 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly googleService: GoogleService,
-  ) { }
+  ) {}
 
   @Post('login')
   handleLogin(
     @Body() loginBody: LoginAuthDto,
-    @Res({ passthrough: true }) response: Response
+    @Res({ passthrough: true }) response: Response,
   ) {
     return this.authService.login(loginBody, response);
   }
@@ -40,15 +33,13 @@ export class AuthController {
   @Get('refresh')
   refresh(
     @Req() request: Request,
-    @Res({ passthrough: true }) response: Response
+    @Res({ passthrough: true }) response: Response,
   ) {
     return this.authService.refresh(request, response);
   }
 
   @Post('maintainer/register')
-  handleMaintainerRegistry(
-    @Body() userBody: MaintainerRegisterAuthDto
-  ) {
+  handleMaintainerRegistry(@Body() userBody: MaintainerRegisterAuthDto) {
     return this.authService.registryFromMaintainer(userBody);
   }
 
@@ -59,5 +50,4 @@ export class AuthController {
   ) {
     return this.googleService.googleAuth(token, response);
   }
-
 }
