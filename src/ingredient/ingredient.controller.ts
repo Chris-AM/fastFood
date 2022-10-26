@@ -26,16 +26,12 @@ import { RoleAgentGuard } from 'src/common/guards/role-agent.guard';
 @Controller('ingredient')
 @UseGuards(JwtAgentGuard, RoleAgentGuard)
 export class IngredientController {
-  constructor(
-    private readonly ingredientService: IngredientService
-  ) {}
+  constructor(private readonly ingredientService: IngredientService) {}
 
   @Post()
   @HttpCode(201)
   @Role(['admin'])
-  createIngredient(
-    @Body() ingredientDto: IngredientDTO
-  ) {
+  createIngredient(@Body() ingredientDto: IngredientDTO) {
     return this.ingredientService.createIngredient(ingredientDto);
   }
 
@@ -44,8 +40,8 @@ export class IngredientController {
   @Role(['admin'])
   @UseInterceptors(FileInterceptor('img', { storage }))
   uploadImage(
-    @Param('id') id: string, 
-    @UploadedFile() file: Express.Multer.File
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
   ) {
     this.ingredientService.uploadImage(id, file.filename);
   }
@@ -60,10 +56,8 @@ export class IngredientController {
 
   @Get(':id')
   @HttpCode(200)
-  @Role(['admin' , 'user'])
-  getIngredientById(
-    @Param('id') id: string
-  ) {
+  @Role(['admin', 'user'])
+  getIngredientById(@Param('id') id: string) {
     return this.ingredientService.getIngredientById(id);
   }
 
@@ -71,8 +65,8 @@ export class IngredientController {
   @HttpCode(200)
   @Role(['admin'])
   updateIngredient(
-    @Param('id') id: string, 
-    @Body() ingredientDto: IngredientDTO
+    @Param('id') id: string,
+    @Body() ingredientDto: IngredientDTO,
   ) {
     return this.ingredientService.updateIngredient(id, ingredientDto);
   }
@@ -80,9 +74,7 @@ export class IngredientController {
   @Delete(':id')
   @HttpCode(200)
   @Role(['admin'])
-  removeIngredient(
-    @Param('id') id: string
-  ) {
+  removeIngredient(@Param('id') id: string) {
     return this.ingredientService.removeIngredient(id);
   }
 }
