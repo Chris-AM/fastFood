@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Put,
+  Res,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -20,7 +21,7 @@ import { JwtAgentGuard } from '../common/guards/jwt-agent.guard';
 import { Role } from 'src/common/decorators/role.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { storage } from '../common/media.handler';
-
+import { Response } from 'express';
 @ApiBearerAuth()
 @ApiTags('users')
 @Controller('user')
@@ -59,6 +60,13 @@ export class UserController {
     @UploadedFile() file: Express.Multer.File,
   ) {
     return this.userService.uploadAvatar(id, file.filename);
+  }
+
+  @Get('avatar/:id')
+  @HttpCode(200)
+  @Role(['user', 'admin', 'manager'])
+  getAvatar(@Param('id') id: string, @Res() res: Response) {
+    return this.userService.getAvatar(id, res);
   }
 
   @Put(':id')

@@ -4,6 +4,9 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Users, UsersDocument } from './schema/user.schema';
 import { plainToHash } from 'src/auth/utils/handleBCrypt';
+import { Response } from 'express';
+import { of } from 'rxjs';
+import { join } from 'path';
 @Injectable()
 export class UserService {
   constructor(
@@ -30,13 +33,18 @@ export class UserService {
   }
 
   async uploadAvatar(id: string, fileName: string): Promise<UsersDocument> {
-    console.log('debug id', id);
-    console.log('debug fileName ===> ', fileName);
-    return this.userModel.findOneAndUpdate(
+    return await this.userModel.findOneAndUpdate(
       { id: id },
       { avatar: fileName },
       { new: true },
     );
+  }
+
+  async getAvatar(id: string, res: Response) {
+    console.log('id', id);
+    const userDB = await this.userModel.findOne({ id: id });
+    const file = userDB.avatar;
+    return of(res.sendFile(join(process.cwd(), './public/' + file)));
   }
 
   async updateUser(id: string, user: UserDTO): Promise<UsersDocument> {
