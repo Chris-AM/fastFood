@@ -9,9 +9,12 @@ import { AuthService } from 'src/app/auth/auth.service';
 })
 export class HeaderComponent implements OnInit {
 
+  public avatarUrl = '';
+
   constructor(
     private readonly authService: AuthService,
-  ) { }
+  ) { 
+  }
 
   ngOnInit(): void {
   }

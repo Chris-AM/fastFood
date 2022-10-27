@@ -61,9 +61,20 @@ export class AuthService {
               phoneCode,
               google,
               facebook,
+              avatar,
             } = resp.user;
             this.user = new User(
-              name,email,adress,phoneNumber,'',id,role,phoneCode,google,facebook
+              name,
+              email,
+              adress,
+              phoneNumber,
+              '',
+              id,
+              role,
+              phoneCode,
+              google,
+              facebook,
+              avatar
             );
             localStorage.setItem('token', resp.token);
           },
