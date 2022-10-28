@@ -53,7 +53,7 @@ export class AuthService {
       this.eventEmiiter.emit('user.created', data);
       return data;
     } catch (error) {
-      console.log('debug error', error);
+      console.error(error);
     }
   }
 
@@ -84,7 +84,7 @@ export class AuthService {
       this.eventEmiiter.emit('user.created', data);
       return data;
     } catch (error) {
-      console.log('debug error', error);
+      console.error(error);
     }
   }
 
@@ -109,8 +109,6 @@ export class AuthService {
     const accessToken = await this.jwtService.signAsync(payload, {
       expiresIn: '10m',
     });
-
-    console.log('debug accessToken', accessToken);
 
     const refreshToken = await this.jwtService.signAsync(payload);
 
@@ -138,7 +136,6 @@ export class AuthService {
         { expiresIn: '15m' },
       );
       const userToken = await this.userModel.findById(id);
-      console.log('debug response ===>', response);
       return { token, user: userToken };
     } catch (error) {
       throw new UnauthorizedException();

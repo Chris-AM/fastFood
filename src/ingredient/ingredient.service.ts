@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 import { IngredientDTO } from './dto/ingredient.dto';
 import { Ingredients, IngredientsDocument } from './schema/ingredient.schema';
-import { Express } from 'express';
 
 @Injectable()
 export class IngredientService {
