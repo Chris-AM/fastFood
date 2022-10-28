@@ -5,26 +5,23 @@ import { SidebarService } from './sidebar.service';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
-  styles: [
-  ]
+  styles: [],
 })
 export class SidebarComponent implements OnInit {
-
+  public avatarUrl = '';
   public menuItems: any[];
 
   constructor(
     private sideBarService: SidebarService,
-    private readonly authService: AuthService,
-  ) { 
+    private readonly authService: AuthService
+  ) {
+    this.avatarUrl = authService.user.avatarUrl;
     this.menuItems = sideBarService.menu;
-    console.log('menuItems', this.menuItems);
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   public logout() {
     this.authService.logout();
   }
-
 }

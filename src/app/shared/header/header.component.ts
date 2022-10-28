@@ -4,19 +4,19 @@ import { AuthService } from 'src/app/auth/auth.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styles: [
-  ]
+  styles: [],
 })
 export class HeaderComponent implements OnInit {
-
   public avatarUrl = '';
 
-  constructor(
-    private readonly authService: AuthService,
-  ) { 
+  constructor(private readonly authService: AuthService) {
+    this.avatarUrl = authService.user.avatarUrl;
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  public getAvatar() {
+    // console.log('🚀 getAvatar', this.headerService.avatar);
   }
 
   public logout() {

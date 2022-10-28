@@ -214,11 +214,7 @@
                   <!-- Message -->
                   <a href="#">
                     <div class="user-img">
-                      <img
-                        src="./assets/images/users/2.jpg"
-                        alt="user"
-                        class="img-circle"
-                      />
+                      <img [src]="avatarUrl" alt="user" class="img-circle" />
                       <span class="profile-status busy pull-right"></span>
                     </div>
                     <div class="mail-contnet">
@@ -314,10 +310,7 @@
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
-            ><img
-              src="./assets/images/users/1.jpg"
-              alt="user"
-              class="profile-pic"
+            ><img [src]="avatarUrl" alt="user" class="profile-pic"
           /></a>
           <div class="dropdown-menu dropdown-menu-right animated fadeIn fast">
             <ul class="dropdown-user">
