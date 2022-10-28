@@ -22,15 +22,17 @@ import { Role } from 'src/common/decorators/role.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { storage } from '../common/media.handler';
 import { Response } from 'express';
+import { of } from 'rxjs';
+import { join } from 'path';
 @ApiBearerAuth()
 @ApiTags('users')
 @Controller('user')
-@UseGuards(JwtAgentGuard, RoleAgentGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
   @HttpCode(201)
+  @UseGuards(JwtAgentGuard, RoleAgentGuard)
   @Role(['manager'])
   createUser(@Body() userDto: UserDTO) {
     return this.userService.createUser(userDto);
@@ -38,6 +40,7 @@ export class UserController {
 
   @Get()
   @HttpCode(200)
+  @UseGuards(JwtAgentGuard, RoleAgentGuard)
   @Role(['manager', 'admin'])
   @UseInterceptors(CacheInterceptor)
   getAllUsers() {
@@ -46,6 +49,7 @@ export class UserController {
 
   @Get(':id')
   @HttpCode(200)
+  @UseGuards(JwtAgentGuard, RoleAgentGuard)
   @Role(['manager', 'admin'])
   getUser(@Param('id') id: string) {
     return this.userService.getUser(id);
@@ -53,7 +57,6 @@ export class UserController {
 
   @Post('upload/:id')
   @HttpCode(201)
-  @Role(['user', 'admin', 'manager'])
   @UseInterceptors(FileInterceptor('avatar', { storage }))
   uploadAvatar(
     @Param('id') id: string,
@@ -62,22 +65,21 @@ export class UserController {
     return this.userService.uploadAvatar(id, file.filename);
   }
 
-  @Get('avatar/:id')
+  @Get('avatar/:filename')
   @HttpCode(200)
-  @Role(['user', 'admin', 'manager'])
-  getAvatar(@Param('id') id: string, @Res() res: Response) {
-    return this.userService.getAvatar(id, res);
+  getAvatar(@Param('filename') filename: string, @Res() res: Response) {
+    return of(res.sendFile(join(process.cwd(), './public/' + filename)));
   }
 
   @Put(':id')
   @HttpCode(200)
-  @Role(['manager', 'admin', 'user'])
   updateUser(@Param('id') id: string, @Body() userDto: UserDTO) {
     return this.userService.updateUser(id, userDto);
   }
 
   @Delete(':id')
   @HttpCode(200)
+  @UseGuards(JwtAgentGuard, RoleAgentGuard)
   @Role(['manager', 'admin'])
   deleteUser(@Param('id') id: string) {
     return this.userService.deleteUser(id);

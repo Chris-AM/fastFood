@@ -41,7 +41,6 @@ export class UserService {
   }
 
   async getAvatar(id: string, res: Response) {
-    console.log('id', id);
     const userDB = await this.userModel.findOne({ id: id });
     const file = userDB.avatar;
     return of(res.sendFile(join(process.cwd(), './public/' + file)));
