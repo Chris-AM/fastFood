@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/auth/auth.service';
+import { User } from 'src/app/models/user.model';
 import { SidebarService } from './sidebar.service';
 
 @Component({
@@ -8,14 +9,14 @@ import { SidebarService } from './sidebar.service';
   styles: [],
 })
 export class SidebarComponent implements OnInit {
-  public avatarUrl = '';
+  public user: User;
   public menuItems: any[];
 
   constructor(
     private sideBarService: SidebarService,
     private readonly authService: AuthService
   ) {
-    this.avatarUrl = authService.user.avatarUrl;
+    this.user = this.authService.user;
     this.menuItems = sideBarService.menu;
   }
 

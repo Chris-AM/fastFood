@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/auth/auth.service';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-header',
@@ -7,17 +8,13 @@ import { AuthService } from 'src/app/auth/auth.service';
   styles: [],
 })
 export class HeaderComponent implements OnInit {
-  public avatarUrl = '';
+  public user: User;
 
   constructor(private readonly authService: AuthService) {
-    this.avatarUrl = authService.user.avatarUrl;
+    this.user = this.authService.user;
   }
 
   ngOnInit(): void {}
-
-  public getAvatar() {
-    // console.log('🚀 getAvatar', this.headerService.avatar);
-  }
 
   public logout() {
     this.authService.logout();
