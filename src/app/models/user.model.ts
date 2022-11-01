@@ -19,13 +19,12 @@ export class User {
 
   get avatarUrl() {
     if (this.avatar) {
-      console.log('there is avatar', this.avatar)
       const url = `${base_url}/user/avatar/${this.avatar}`;
       return url;
     } else {
-      const url = 'https://thumbs.dreamstime.com/b/no-image-available-icon-photo-camera-flat-vector-illustration-132483141.jpg'
-      console.log('🚀 url', url);
-      return url ;
+      const url =
+        'https://thumbs.dreamstime.com/b/no-image-available-icon-photo-camera-flat-vector-illustration-132483141.jpg';
+      return url;
     }
   }
 }
