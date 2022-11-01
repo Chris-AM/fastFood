@@ -48,39 +48,37 @@ export class AuthService {
         },
       })
       .pipe(
-        tap({
-          next: (resp: any) => {
-            const {
-              name,
-              email,
-              adress,
-              phoneNumber,
-              password,
-              id,
-              role,
-              phoneCode,
-              google,
-              facebook,
-              avatar,
-            } = resp.user;
-            this.user = new User(
-              name,
-              email,
-              adress,
-              phoneNumber,
-              '',
-              id,
-              role,
-              phoneCode,
-              google,
-              facebook,
-              avatar
-            );
-            localStorage.setItem('token', resp.token);
-          },
+        map((resp: any) => {
+          const {
+            name,
+            email,
+            adress,
+            phoneNumber,
+            password,
+            id,
+            role,
+            phoneCode,
+            google,
+            facebook,
+            avatar,
+          } = resp.user;
+          this.user = new User(
+            name,
+            email,
+            adress,
+            phoneNumber,
+            '',
+            id,
+            role,
+            phoneCode,
+            google,
+            facebook,
+            avatar
+          );
+          localStorage.setItem('token', resp.token);
+          return true;
         }),
-        map((resp) => true),
-        catchError((error) => of(false))
+        catchError( error => of(false)),
       );
   }
 
