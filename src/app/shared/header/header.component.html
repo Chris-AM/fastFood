@@ -214,7 +214,11 @@
                   <!-- Message -->
                   <a href="#">
                     <div class="user-img">
-                      <img [src]="user.avatarUrl" alt="user" class="img-circle" />
+                      <img
+                        [src]="user.avatarUrl"
+                        alt="user"
+                        class="img-circle"
+                      />
                       <span class="profile-status busy pull-right"></span>
                     </div>
                     <div class="mail-contnet">
@@ -310,21 +314,23 @@
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
-            ><img [src]=" user.avatarUrl " alt="user" class="profile-pic"
+            ><img [src]="user.avatarUrl" alt="user" class="profile-pic"
           /></a>
           <div class="dropdown-menu dropdown-menu-right animated fadeIn fast">
             <ul class="dropdown-user">
               <li>
                 <div class="dw-user-box">
                   <div class="u-img">
-                    <img [src]=" user.avatarUrl " alt="user" />
+                    <img [src]="user.avatarUrl" alt="user" />
                   </div>
                   <div class="u-text">
-                    <h4> 
-                      {{ user.name | slice:0:10 }}{{ (user.name.length > 20 ) ? '...' : '' }}
+                    <h4>
+                      {{ user.name | slice: 0:10
+                      }}{{ user.name.length > 20 ? "..." : "" }}
                     </h4>
                     <p class="text-muted">
-                      {{ user.email | slice:0:20 }}{{ (user.email.length > 20 ) ? '...' : '' }}
+                      {{ user.email | slice: 0:20
+                      }}{{ user.email.length > 20 ? "..." : "" }}
                     </p>
                     <a
                       href="pages-profile.html"
@@ -336,7 +342,9 @@
               </li>
               <li role="separator" class="divider"></li>
               <li>
-                <a href="#"><i class="ti-user"></i> My Profile</a>
+                <a routerLink="user-profile"
+                  ><i class="ti-user"></i> My Profile</a
+                >
               </li>
               <li>
                 <a href="#"><i class="ti-wallet"></i> My Balance</a>

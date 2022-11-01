@@ -10,6 +10,7 @@ import { ProductComponent } from './product/product.component';
 import { UsersComponent } from './users/users.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { AuthGuard } from '../auth/auth.guard';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 const routes: Routes = [
   {
@@ -40,6 +41,11 @@ const routes: Routes = [
         path: 'account-settings',
         component: AccountSettingsComponent,
         data: { title: 'configuaraciones' },
+      },
+      {
+        path: 'user-profile',
+        component: UserProfileComponent,
+        data: { title: 'perfil' },
       },
     ],
   },

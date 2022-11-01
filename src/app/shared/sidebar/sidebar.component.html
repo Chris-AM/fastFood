@@ -18,7 +18,9 @@
           </a>
           <ul aria-expanded="false" class="collapse">
             <li>
-              <a href="javascript:void()"> My Profile </a>
+              <a routerLinkActive="active" routerLink="user-profile">
+                My Profile
+              </a>
             </li>
             <li>
               <a href="javascript:void()"> My Balance </a>
@@ -27,7 +29,9 @@
               <a href="javascript:void()"> Inbox </a>
             </li>
             <li>
-              <a routerLink="account-settings"> Account Setting </a>
+              <a routerLinkActive="active" routerLink="account-settings">
+                Account Setting
+              </a>
             </li>
             <li>
               <a (click)="logout()" class="logout">

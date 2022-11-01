@@ -1,7 +1,7 @@
 //node_modules
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgChartsModule } from 'ng2-charts';
 import { HttpClientModule } from '@angular/common/http';
@@ -21,6 +21,7 @@ import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { TestComponent } from './hidden/test.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { AccountSettingsComponent } from './account-settings/account-settings.co
     DashboardComponent,
     TestComponent,
     AccountSettingsComponent,
+    UserProfileComponent,
   ],
   exports: [
     IngredientComponent,
@@ -48,6 +50,7 @@ import { AccountSettingsComponent } from './account-settings/account-settings.co
   ],
   imports: [
     RouterModule,
+    ReactiveFormsModule,
     CommonModule,
     SharedModule,
     FormsModule,
