@@ -14,7 +14,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { UserDTO } from './dto/user.dto';
+import { UserDTO } from './dto/create-user.dto';
 import { UserService } from './user.service';
 import { RoleAgentGuard } from '../common/guards/role-agent.guard';
 import { JwtAgentGuard } from '../common/guards/jwt-agent.guard';
@@ -24,6 +24,7 @@ import { storage } from '../common/media.handler';
 import { Response } from 'express';
 import { of } from 'rxjs';
 import { join } from 'path';
+import { UpdateUserDTO } from './dto/update-user.dto';
 @ApiBearerAuth()
 @ApiTags('users')
 @Controller('user')
@@ -73,7 +74,7 @@ export class UserController {
 
   @Put(':id')
   @HttpCode(200)
-  updateUser(@Param('id') id: string, @Body() userDto: UserDTO) {
+  updateUser(@Param('id') id: string, @Body() userDto: UpdateUserDTO) {
     return this.userService.updateUser(id, userDto);
   }
 
