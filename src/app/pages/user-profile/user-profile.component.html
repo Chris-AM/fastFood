@@ -4,86 +4,68 @@
       <div class="card-body">
         <h4 class="card-title">My user profile</h4>
         <h6 class="card-subtitle">made with bootstrap elements</h6>
-        <form
-          class="form p-t-20"
-          autocomplete="off"
-          [formGroup]="profileForm"
-          (submit)="updateProfile()"
-          id="profileForm"
-        >
+        <form class="form p-t-20" autocomplete="off" [formGroup]="profileForm" (submit)="updateProfile()"
+          id="profileForm">
           <div class="form-group">
             <label for="exampleInputuname">User Name</label>
             <div class="input-group">
               <div class="input-group-addon"><i class="ti-user"></i></div>
-              <input
-                type="text"
-                class="form-control"
-                id="exampleInputuname"
-                placeholder="Username"
-                formControlName="name"
-              />
+              <input type="text" class="form-control" id="exampleInputuname" placeholder="Username"
+                formControlName="name" />
             </div>
           </div>
           <div class="form-group">
             <label for="exampleInputEmail1">Email address</label>
             <div class="input-group">
               <div class="input-group-addon"><i class="ti-email"></i></div>
-              <input
-                type="email"
-                class="form-control"
-                id="exampleInputEmail1"
-                placeholder="Enter email"
-                formControlName="email"
-              />
+              <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email"
+                formControlName="email" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="phoneNumber">Phone Number</label>
+            <div class="input-group">
+              <div class="input-group-addon"><i class="ti-email"></i></div>
+              <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email"
+                formControlName="phoneNumber" />
             </div>
           </div>
           <div class="form-group">
             <label for="pwd1">Password</label>
             <div class="input-group">
               <div class="input-group-addon"><i class="ti-lock"></i></div>
-              <input
-                type="password"
-                class="form-control"
-                id="pwd1"
-                placeholder="Enter pass"
-                formControlName="password"
-              />
+              <input type="password" class="form-control" id="pwd1" placeholder="Enter pass"
+                formControlName="password" />
             </div>
           </div>
           <div class="form-group">
             <label for="pwd2">Confirm Password</label>
             <div class="input-group">
               <div class="input-group-addon"><i class="ti-lock"></i></div>
-              <input
-                type="password"
-                class="form-control"
-                id="pwd2"
-                placeholder="Enter email"
-                formControlName="confirmPassword"
-              />
+              <input type="password" class="form-control" id="pwd2" placeholder="Enter email"
+                formControlName="confirmPassword" />
             </div>
           </div>
           <div class="form-group">
-            <div class="checkbox checkbox-success">
-              <input
-                id="checkbox1"
-                type="checkbox"
-                formControlName="remember"
-              />
-              <label for="checkbox1"> Remember me </label>
+            <label for="pwd2">Dirección</label>
+            <div class="input-group">
+              <div class="input-group-addon"><i class="ti-direction"></i></div>
+              <input type="text" class="form-control" id="pwd2" placeholder="Enter email"
+                formControlName="adress" />
             </div>
           </div>
-          <button
-            type="submit"
-            class="btn btn-success waves-effect waves-light m-r-10"
-            [disabled]="profileForm.invalid"
-          >
+          <!-- <select class="form-control custom-select" formControlName="role" tabindex="1">
+            <option *ngFor="let role of roles" [ngValue]="role">
+              {{ role.option }}
+            </option>
+          </select> -->
+          <br>
+          <br>
+          <button type="submit" class="btn btn-success waves-effect waves-light m-r-10"
+            [disabled]="profileForm.invalid">
             Submit
           </button>
-          <button
-            type="submit"
-            class="btn btn-inverse waves-effect waves-light"
-          >
+          <button type="submit" class="btn btn-inverse waves-effect waves-light">
             Cancel
           </button>
         </form>
@@ -97,10 +79,9 @@
         <h6 class="card-subtitle">UserImage</h6>
         <img src="" />
         <input type="file" name="user-avatar" />
-        <button
-          type="submit"
-          class="btn btn-success waves-effect waves-light m-r-10"
-        >
+        <br>
+        <br>
+        <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">
           submit
         </button>
       </div>

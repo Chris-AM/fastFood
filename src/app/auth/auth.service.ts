@@ -19,6 +19,14 @@ export class AuthService {
 
   constructor(private httpClient: HttpClient, private router: Router) {}
 
+  get token(): string {
+    return localStorage.getItem('token') || '';
+  }
+
+  get uuid(): string {
+    return this.user.id || '';
+  }
+
   createUser(formData: registerInterface) {
     return this.httpClient
       .post(`${base_url}/auth/maintainer/register`, formData)
@@ -40,7 +48,7 @@ export class AuthService {
   }
 
   validateToken(): Observable<boolean> {
-    const token = localStorage.getItem('token') || '';
+    const token = this.token;
     return this.httpClient
       .get(`${base_url}/auth/refresh`, {
         headers: {
@@ -78,8 +86,28 @@ export class AuthService {
           localStorage.setItem('token', resp.token);
           return true;
         }),
-        catchError( error => of(false)),
+        catchError((error) => of(false))
       );
+  }
+
+  updateProfile(data: {
+    name?: string;
+    email?: string;
+    phoneNumber?: number;
+    password?: string;
+    confirmPassword?: string;
+    adress?: string;
+    role?: string;
+  }) {
+    data = { ...data, role: this.user.role[0] };
+    console.log('🚀 data', data);
+    const token = this.token;
+    console.log('🚀 token', token);
+    return this.httpClient.put(`${base_url}/user/${this.uuid}`, data, {
+      headers: {
+        'x-token': token,
+      },
+    });
   }
 
   logout() {

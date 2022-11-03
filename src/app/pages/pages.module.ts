@@ -22,6 +22,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { TestComponent } from './hidden/test.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { AuthModule } from '../auth/auth.module';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     ComponentsModule,
     NgChartsModule,
     HttpClientModule,
+    AuthModule
   ],
 })
 export class PagesModule {}
