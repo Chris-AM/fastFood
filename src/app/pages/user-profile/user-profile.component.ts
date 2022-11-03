@@ -45,7 +45,7 @@ export class UserProfileComponent implements OnInit {
 
   updateProfile() {
     this.authService.updateProfile(this.profileForm.value).subscribe({
-      next: (resp) => {
+      next: () => {
         const { name, email, phoneNumber, password, adress } =
           this.profileForm.value;
         (this.user.name = name),
@@ -53,10 +53,11 @@ export class UserProfileComponent implements OnInit {
           (this.user.phoneNumber = phoneNumber),
           (this.user.password = password),
           (this.user.adress = adress);
+        Swal.fire('Actualizado', '', 'success');
       },
       error: (error) => {
         Swal.fire('Error', error.statusText, 'error'),
-        console.log('🚀 error', error);
+          console.log('🚀 error', error);
       },
     });
   }

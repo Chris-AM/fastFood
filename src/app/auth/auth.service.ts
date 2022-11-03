@@ -100,9 +100,7 @@ export class AuthService {
     role?: string;
   }) {
     data = { ...data, role: this.user.role[0] };
-    console.log('🚀 data', data);
     const token = this.token;
-    console.log('🚀 token', token);
     return this.httpClient.put(`${base_url}/user/${this.uuid}`, data, {
       headers: {
         'x-token': token,
