@@ -58,7 +58,7 @@ export class UserController {
 
   @Post('upload/:id')
   @HttpCode(201)
-  @UseInterceptors(FileInterceptor('avatar', { storage }))
+  @UseInterceptors(FileInterceptor('photo', { storage }))
   uploadAvatar(
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
