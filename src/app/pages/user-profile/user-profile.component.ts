@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/auth/auth.service';
 import { User } from 'src/app/models/user.model';
+import { UploadImagesService } from 'src/app/shared/upload-images.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -13,8 +14,13 @@ export class UserProfileComponent implements OnInit {
   public roles = ['admin', 'manager'];
   public user: User;
   public profileForm: FormGroup;
+  public avatarToUpload: File;
+  public imgTemp: string | ArrayBuffer = null;
 
-  constructor(private readonly authService: AuthService) {
+  constructor(
+    private readonly authService: AuthService,
+    private readonly uploadImagesService: UploadImagesService
+  ) {
     this.user = this.authService.user;
   }
 
@@ -55,10 +61,30 @@ export class UserProfileComponent implements OnInit {
           (this.user.adress = adress);
         Swal.fire('Actualizado', '', 'success');
       },
-      error: (error) => {
-        Swal.fire('Error', error.statusText, 'error'),
-          console.log('🚀 error', error);
-      },
+      error: (error) => Swal.fire('Error', error.error.message, 'error'),
     });
+  }
+
+  updateAvatar(file: File) {
+    this.avatarToUpload = file;
+    if (!file) {
+      return (this.imgTemp = null);
+    }
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      this.imgTemp = reader.result;
+    };
+  }
+
+  uploadAvatar() {
+    this.uploadImagesService
+      .uploadImages(this.avatarToUpload, 'user', this.user.id)
+      .subscribe({
+        next: (res: User) => {
+          this.user.avatar = res.avatar;
+          Swal.fire('Avatar Actualizado', '', 'success');
+        },
+      });
   }
 }

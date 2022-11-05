@@ -1,3 +1,7 @@
+#themecolors .selector, .logout{
+    cursor: pointer;
+}
+
 .fast{
     -webkit-animation-duration: 0.3s;
     animation-duration: 0.3s;
@@ -5,6 +9,6 @@
     animation-fill-mode:both
 }
 
-#themecolors .selector, .logout{
-    cursor: pointer;
+.avatar-previsualization{
+    width: 8rem;
 }
