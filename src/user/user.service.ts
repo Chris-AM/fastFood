@@ -47,16 +47,32 @@ export class UserService {
     return of(res.sendFile(join(process.cwd(), './public/' + file)));
   }
 
-  async updateUser(id: string, userBody: UpdateUserDTO): Promise<UsersDocument> {
-    const { password, ...user } = userBody;
+  async updateUser(
+    id: string,
+    userBody: UpdateUserDTO,
+    response: Response,
+  ): Promise<UsersDocument> {
+    const { password, email, ...user } = userBody;
     const parsedUser = {
       ...user,
+      email,
       password: await plainToHash(password),
     };
-    const updatedUser = await this.userModel.findOneAndUpdate({ id: id }, parsedUser, {
-      new: true,
-    });
-    return updatedUser
+    const doesUserExists = await this.userModel.findOne({ email });
+    if (doesUserExists) {
+      response.status(400).json({
+        ok: false,
+        message: 'Correo ya se encuentra en uso',
+      });
+    }
+    const updatedUser = await this.userModel.findOneAndUpdate(
+      { id: id },
+      parsedUser,
+      {
+        new: true,
+      },
+    );
+    return updatedUser;
   }
 
   async deleteUser(id: string): Promise<UsersDocument> {

@@ -74,8 +74,12 @@ export class UserController {
 
   @Put(':id')
   @HttpCode(200)
-  updateUser(@Param('id') id: string, @Body() userDto: UpdateUserDTO) {
-    return this.userService.updateUser(id, userDto);
+  updateUser(
+    @Param('id') id: string,
+    @Body() userDto: UpdateUserDTO,
+    @Res() response: Response,
+  ) {
+    return this.userService.updateUser(id, userDto, response);
   }
 
   @Delete(':id')
