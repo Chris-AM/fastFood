@@ -8,11 +8,16 @@ import { Response } from 'express';
 import { of } from 'rxjs';
 import { join } from 'path';
 import { UpdateUserDTO } from './dto/update-user.dto';
+
+interface ModelExt<T> extends Model<T> {
+  paginate: Function;
+}
+
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(Users.name)
-    private readonly userModel: Model<UsersDocument>,
+    private readonly userModel: ModelExt<UsersDocument>,
   ) {}
 
   async createUser(userBody: UserDTO): Promise<UsersDocument> {
@@ -25,8 +30,8 @@ export class UserService {
     return newUser;
   }
 
-  async getAllUsers(): Promise<UsersDocument[]> {
-    return await this.userModel.find().exec();
+  async getAllUsers(paginatation:any): Promise<UsersDocument[]> {
+    return await this.userModel.paginate({}, paginatation);
   }
 
   async getUser(id: string): Promise<UsersDocument> {

@@ -25,6 +25,7 @@ import { Response } from 'express';
 import { of } from 'rxjs';
 import { join } from 'path';
 import { UpdateUserDTO } from './dto/update-user.dto';
+import { PaginationQuery } from 'src/common/decorators/pagination.decorator';
 @ApiBearerAuth()
 @ApiTags('users')
 @Controller('user')
@@ -44,8 +45,8 @@ export class UserController {
   @UseGuards(JwtAgentGuard, RoleAgentGuard)
   @Role(['manager', 'admin'])
   @UseInterceptors(CacheInterceptor)
-  getAllUsers() {
-    return this.userService.getAllUsers();
+  getAllUsers(@PaginationQuery() pagination: any) {
+    return this.userService.getAllUsers(pagination);
   }
 
   @Get(':id')
