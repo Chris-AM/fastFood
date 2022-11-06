@@ -9,7 +9,6 @@ import { TimeOutInterceptor } from './common/interceptors/timeout.interceptor';
 
 async function fastoodBackend() {
   const port = process.env.PORT || 3000;
-  console.log('🚀 running on port ', port);
   const app = await NestFactory.create(AppModule, {
     cors: true,
   });
