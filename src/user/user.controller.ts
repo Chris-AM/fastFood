@@ -21,7 +21,7 @@ import { JwtAgentGuard } from '../common/guards/jwt-agent.guard';
 import { Role } from 'src/common/decorators/role.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { storage } from '../common/media.handler';
-import { Response } from 'express';
+import { response, Response } from 'express';
 import { of } from 'rxjs';
 import { join } from 'path';
 import { UpdateUserDTO } from './dto/update-user.dto';
@@ -53,8 +53,8 @@ export class UserController {
   @HttpCode(200)
   @UseGuards(JwtAgentGuard, RoleAgentGuard)
   @Role(['manager', 'admin'])
-  getUser(@Param('id') id: string) {
-    return this.userService.getUser(id);
+  getUser(@Param('id') id: string, @Res() response: Response) {
+    return this.userService.getUser(id, response);
   }
 
   @Post('upload/:id')

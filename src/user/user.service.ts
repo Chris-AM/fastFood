@@ -30,12 +30,20 @@ export class UserService {
     return newUser;
   }
 
-  async getAllUsers(paginatation:any): Promise<UsersDocument[]> {
+  async getAllUsers(paginatation: any): Promise<UsersDocument[]> {
     return await this.userModel.paginate({}, paginatation);
   }
 
-  async getUser(id: string): Promise<UsersDocument> {
-    return await this.userModel.findOne({ id: id });
+  async getUser(id: string, response: Response): Promise<UsersDocument> {
+    const userDB = await this.userModel.findOne({ id: id });
+    if (!userDB) {
+      response.status(404).json({
+        ok: false,
+        message: 'Usuario no encontrado',
+      });
+    } else {
+      return userDB;
+    }
   }
 
   async uploadAvatar(id: string, fileName: string): Promise<UsersDocument> {
