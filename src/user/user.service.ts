@@ -33,7 +33,7 @@ export class UserService {
   async getAllUsers(paginatation: any): Promise<UsersDocument[]> {
     return await this.userModel.paginate({}, paginatation);
   }
-
+  
   async getUser(id: string, response: Response): Promise<UsersDocument> {
     const userDB = await this.userModel.findOne({ id: id });
     if (!userDB) {
@@ -88,7 +88,22 @@ export class UserService {
     return updatedUser;
   }
 
-  async deleteUser(id: string): Promise<UsersDocument> {
-    return await this.userModel.findOneAndDelete({ id: id });
+  async deleteUser(id: string, response: Response): Promise<UsersDocument> {
+    const doesUserExists = await this.userModel.findOne({ id: id });
+    if (!doesUserExists) {
+      response.status(404).json({
+        ok: false,
+        verb: 'delete',
+        message: 'Usuario no encontrado',
+      });
+      return null;
+    }
+    const deletedUser = await this.userModel.findOneAndDelete({ id: id });
+    response.status(200).json({
+      ok: true,
+      verb: 'delete',
+      message: `Usuario ${deletedUser.name} borrado`,
+    });
+    return deletedUser
   }
 }
