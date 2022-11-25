@@ -13,6 +13,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { EmailsModule } from './emails/emails.module';
 import { DrinksModule } from './drinks/drinks.module';
 import { SocketProvider } from './providers/socket-provider';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
@@ -27,6 +28,9 @@ import { SocketProvider } from './providers/socket-provider';
       ttl: 3600,
       max: 1000,
       isGlobal: true,
+    }),
+    MulterModule.register({
+      dest: '../public',
     }),
     EventEmitterModule.forRoot(),
     MongooseModule.forRoot(process.env.URI_MONGODB),

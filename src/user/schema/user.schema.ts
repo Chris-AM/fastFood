@@ -18,7 +18,7 @@ export class Users {
   phoneNumber: number;
   @Prop({ required: true })
   password: string;
-  @Prop()
+  @Prop({ default: '' })
   avatar: string;
   @Prop({ default: ['user'] })
   role: string[];
@@ -26,6 +26,8 @@ export class Users {
   google: boolean;
   @Prop({ default: false })
   facebook: boolean;
+  @Prop({ default: '' })
+  adress: string;
 }
 
 export const UsersSchema = SchemaFactory.createForClass(Users);

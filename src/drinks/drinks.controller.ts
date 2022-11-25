@@ -40,7 +40,7 @@ export class DrinksController {
   @Post('upload/:id')
   @HttpCode(201)
   @Role([ 'admin' ])
-  @UseInterceptors(FileInterceptor('img', { storage }))
+  @UseInterceptors(FileInterceptor('photo', { storage }))
   uploadImage(
     @Param('id') id: string, 
     @UploadedFile() file: Express.Multer.File

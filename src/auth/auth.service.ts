@@ -23,7 +23,7 @@ export class AuthService {
     private readonly eventEmiiter: EventEmitter2,
     @InjectModel(Users.name)
     private readonly userModel: Model<UsersDocument>,
-  ) { }
+  ) {}
 
   public async register(userBody: RegisterAuthDto) {
     const { password, ...user } = userBody;
@@ -37,10 +37,7 @@ export class AuthService {
     });
 
     if (doesUserExist) {
-      throw new HttpException(
-        'Mail already in use', 
-        HttpStatus.BAD_REQUEST
-        );
+      throw new HttpException('Mail already in use', HttpStatus.BAD_REQUEST);
     }
 
     const newUser = await this.userModel.create(parsedUser);
@@ -56,13 +53,11 @@ export class AuthService {
       this.eventEmiiter.emit('user.created', data);
       return data;
     } catch (error) {
-      console.log('debug error', error);
+      console.error(error);
     }
   }
 
-  public async registryFromMaintainer(
-    userBody: MaintainerRegisterAuthDto
-    ) {
+  public async registryFromMaintainer(userBody: MaintainerRegisterAuthDto) {
     const { password, role, ...user } = userBody;
     const parsedUser = {
       ...user,
@@ -75,10 +70,7 @@ export class AuthService {
     });
 
     if (doesUserExist) {
-      throw new HttpException(
-        'Mail already in use', 
-        HttpStatus.BAD_REQUEST
-        );
+      throw new HttpException('Mail already in use', HttpStatus.BAD_REQUEST);
     }
     const newAdminUser = await this.userModel.create(parsedUser);
     const flatUser = newAdminUser.toObject();
@@ -92,14 +84,11 @@ export class AuthService {
       this.eventEmiiter.emit('user.created', data);
       return data;
     } catch (error) {
-      console.log('debug error', error);
+      console.error(error);
     }
   }
 
-  public async login(
-    userLoginBody: LoginAuthDto, 
-    response: Response
-    ) {
+  public async login(userLoginBody: LoginAuthDto, response: Response) {
     const { password } = userLoginBody;
     const doesUserExist = await this.userModel.findOne({
       email: userLoginBody.email,
@@ -117,11 +106,9 @@ export class AuthService {
 
     const payload = { id: flatUser._id };
 
-    const accessToken = await this.jwtService.signAsync(
-      payload, { expiresIn: '30s' }
-    );
-
-    console.log('debug accessToken', accessToken);
+    const accessToken = await this.jwtService.signAsync(payload, {
+      expiresIn: '10m',
+    });
 
     const refreshToken = await this.jwtService.signAsync(payload);
 
@@ -140,16 +127,13 @@ export class AuthService {
     return data;
   }
 
-  public async refresh(
-    request: Request, 
-    response: Response
-    ) {
+  public async refresh(request: Request, response: Response) {
     try {
       const refreshToken = request.headers['x-token'];
       const { id } = await this.jwtService.verifyAsync(refreshToken.toString());
       const token = await this.jwtService.signAsync(
-        { id }, 
-        { expiresIn: '30s' }
+        { id },
+        { expiresIn: '15m' },
       );
       const userToken = await this.userModel.findById(id);
       return { token, user: userToken };

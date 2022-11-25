@@ -6,6 +6,7 @@ import { Products, ProductsDocument } from 'src/product/schema/product.schema';
 import { MenuDTO } from './dto/menu.dto';
 import { Menus, MenusDocument } from './schema/menu.schema';
 import { DrinksDocument } from '../drinks/schema/drink.schema';
+import { Response } from 'express';
 
 @Injectable()
 export class MenuService {
@@ -43,13 +44,25 @@ export class MenuService {
 
   async uploadPhoto(
     menuId: string,
-    fileName: string
+    fileName: string,
+    response: Response
   ): Promise<MenusDocument> {
-    return await this.menuModel.findByIdAndUpdate(
-      menuId,
-      { photo: fileName },
-      { new: true, upsert: true }
-    );
+    try {
+      const ingredientDB = await this.menuModel.findById(menuId);
+      if (!ingredientDB) {
+        response.status(404).json({
+          ok: false,
+          message: 'Ingrediente no encontrada',
+        });
+      }
+      return await this.menuModel.findByIdAndUpdate(
+        menuId,
+        { photo: fileName },
+        { new: true, upsert: true },
+      );
+    } catch (error) {
+      error;
+    }
   }
 
   async getAllMenus(): Promise<MenusDocument[]> {

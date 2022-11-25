@@ -1,15 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import { UserDTO } from './dto/user.dto';
-import * as bcrypt from 'bcrypt';
+import { UserDTO } from './dto/create-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Users, UsersDocument } from './schema/user.schema';
 import { plainToHash } from 'src/auth/utils/handleBCrypt';
+import { Response } from 'express';
+import { of } from 'rxjs';
+import { join } from 'path';
+import { UpdateUserDTO } from './dto/update-user.dto';
+
+interface ModelExt<T> extends Model<T> {
+  paginate: Function;
+}
+
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(Users.name)
-    private readonly userModel: Model<UsersDocument>
+    private readonly userModel: ModelExt<UsersDocument>,
   ) {}
 
   async createUser(userBody: UserDTO): Promise<UsersDocument> {
@@ -22,34 +30,80 @@ export class UserService {
     return newUser;
   }
 
-  async getAllUsers(): Promise<UsersDocument[]> {
-    return await this.userModel.find().exec();
+  async getAllUsers(paginatation: any): Promise<UsersDocument[]> {
+    return await this.userModel.paginate({}, paginatation);
+  }
+  
+  async getUser(id: string, response: Response): Promise<UsersDocument> {
+    const userDB = await this.userModel.findOne({ id: id });
+    if (!userDB) {
+      response.status(404).json({
+        ok: false,
+        message: 'Usuario no encontrado',
+      });
+    } else {
+      return userDB;
+    }
   }
 
-  async getUser(
-    id: string
-  ): Promise<UsersDocument> {
-    return await this.userModel.findOne(
-      { id: id },
-    )
-  }
-
-  async updateUser(
-    id: string,
-    user: UserDTO,
-  ): Promise<UsersDocument> {
+  async uploadAvatar(id: string, fileName: string): Promise<UsersDocument> {
     return await this.userModel.findOneAndUpdate(
       { id: id },
-      user,
+      { avatar: fileName },
       { new: true },
     );
   }
 
-  async deleteUser(
-    id: string
+  async getAvatar(id: string, res: Response) {
+    const userDB = await this.userModel.findOne({ id: id });
+    const file = userDB.avatar;
+    return of(res.sendFile(join(process.cwd(), './public/' + file)));
+  }
+
+  async updateUser(
+    id: string,
+    userBody: UpdateUserDTO,
+    response: Response,
   ): Promise<UsersDocument> {
-    return await this.userModel.findOneAndDelete(
-      { id: id }
+    const { password, email, ...user } = userBody;
+    const parsedUser = {
+      ...user,
+      email,
+      password: await plainToHash(password),
+    };
+    const doesUserExists = await this.userModel.findOne({ email });
+    if (doesUserExists) {
+      response.status(400).json({
+        ok: false,
+        message: 'Correo ya se encuentra en uso',
+      });
+    }
+    const updatedUser = await this.userModel.findOneAndUpdate(
+      { id: id },
+      parsedUser,
+      {
+        new: true,
+      },
     );
+    return updatedUser;
+  }
+
+  async deleteUser(id: string, response: Response): Promise<UsersDocument> {
+    const doesUserExists = await this.userModel.findOne({ id: id });
+    if (!doesUserExists) {
+      response.status(404).json({
+        ok: false,
+        verb: 'delete',
+        message: 'Usuario no encontrado',
+      });
+      return null;
+    }
+    const deletedUser = await this.userModel.findOneAndDelete({ id: id });
+    response.status(200).json({
+      ok: true,
+      verb: 'delete',
+      message: `Usuario ${deletedUser.name} borrado`,
+    });
+    return deletedUser
   }
 }

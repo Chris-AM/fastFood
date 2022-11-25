@@ -1,73 +1,93 @@
-import { Body, 
-  CacheInterceptor, 
-  Controller, 
-  Delete, 
-  Get, 
-  HttpCode, 
-  Param, 
-  Post, 
-  Put, 
+import {
+  Body,
+  CacheInterceptor,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Param,
+  Post,
+  Put,
+  Res,
+  UploadedFile,
   UseGuards,
-  UseInterceptors
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { UserDTO } from './dto/user.dto';
+import { UserDTO } from './dto/create-user.dto';
 import { UserService } from './user.service';
 import { RoleAgentGuard } from '../common/guards/role-agent.guard';
 import { JwtAgentGuard } from '../common/guards/jwt-agent.guard';
 import { Role } from 'src/common/decorators/role.decorator';
-
+import { FileInterceptor } from '@nestjs/platform-express';
+import { storage } from '../common/media.handler';
+import { Response,  } from 'express';
+import { of } from 'rxjs';
+import { join } from 'path';
+import { UpdateUserDTO } from './dto/update-user.dto';
+import { PaginationQuery } from 'src/common/decorators/pagination.decorator';
 @ApiBearerAuth()
 @ApiTags('users')
 @Controller('user')
-@UseGuards(JwtAgentGuard, RoleAgentGuard)
-export class UserController { 
-  
-  constructor(private readonly userService: UserService){}
-  
+export class UserController {
+  constructor(private readonly userService: UserService) {}
+
   @Post()
   @HttpCode(201)
+  @UseGuards(JwtAgentGuard, RoleAgentGuard)
   @Role(['manager'])
-  createUser(
-    @Body() userDto: UserDTO
-  ) {
+  createUser(@Body() userDto: UserDTO) {
     return this.userService.createUser(userDto);
   }
 
   @Get()
   @HttpCode(200)
+  @UseGuards(JwtAgentGuard, RoleAgentGuard)
   @Role(['manager', 'admin'])
   @UseInterceptors(CacheInterceptor)
-  getAllUsers() {
-    return this.userService.getAllUsers();
+  getAllUsers(@PaginationQuery() pagination: any) {
+    return this.userService.getAllUsers(pagination);
   }
 
   @Get(':id')
   @HttpCode(200)
+  @UseGuards(JwtAgentGuard, RoleAgentGuard)
   @Role(['manager', 'admin'])
-  getUser(
-    @Param('id') id: string
+  getUser(@Param('id') id: string, @Res() response: Response) {
+    return this.userService.getUser(id, response);
+  }
+
+  @Post('upload/:id')
+  @HttpCode(201)
+  @UseInterceptors(FileInterceptor('photo', { storage }))
+  uploadAvatar(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.userService.getUser(id);
+    return this.userService.uploadAvatar(id, file.filename);
+  }
+
+  @Get('avatar/:filename')
+  @HttpCode(200)
+  getAvatar(@Param('filename') filename: string, @Res() res: Response) {
+    return of(res.sendFile(join(process.cwd(), './public/' + filename)));
   }
 
   @Put(':id')
   @HttpCode(200)
-  @Role(['manager', 'admin', 'user'])
   updateUser(
     @Param('id') id: string,
-    @Body() userDto: UserDTO
+    @Body() userDto: UpdateUserDTO,
+    @Res() response: Response,
   ) {
-    return this.userService.updateUser(id, userDto);
+    return this.userService.updateUser(id, userDto, response);
   }
 
   @Delete(':id')
   @HttpCode(200)
+  @UseGuards(JwtAgentGuard, RoleAgentGuard)
   @Role(['manager', 'admin'])
-  deleteUser(
-    @Param('id') id: string
-  ) {
-    return this.userService.deleteUser(id);
+  deleteUser(@Param('id') id: string, @Res() response: Response) {
+    return this.userService.deleteUser(id, response);
   }
-  
 }
