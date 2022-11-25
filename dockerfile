@@ -1,10 +1,14 @@
-FROM node:18-alpine
+# Runtime (production) Layer
+FROM node:18-alpine as production
 
 WORKDIR /usr/src/app
 
-COPY ./ ./
+COPY package.json ./
+COPY package-lock.json ./
 
 RUN npm install
+
+COPY ./ ./
 
 EXPOSE 3000
 
