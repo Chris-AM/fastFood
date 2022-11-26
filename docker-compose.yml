@@ -1,23 +1,51 @@
-version: '3.9'
-
+version: '3.3'
 services:
-  nest: 
-    container_name: fast_food
+  dev:
+    container_name: fastFood-API-beta1-dev
+    image: fastFood-API-beta1-dev:1.0.0
     build:
-      context: ./
-    restart: always
+      context: .
+      dockerfile: ./Dockerfile
+      command: npm run start:dev
     ports:
-      - 8080:3000
-    environment: []
+      - 3000:3000
+      - 3001:9229
+    networks:
+      - fastFood-network
     depends_on:
-      - mongo
-    links:
-      - mongo
-  mongo:
-    constainer_name: mongo_server
-    image: mongo
-    restart: always
+      - mongodb
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
+  prod:
+    container_name: fastFood-API-beta1-prod
+    image: fastFood-API-beta1-prod:1.0.0
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: npm run start:prod
     ports:
-      - "27019:27017"
-    expose:
-      - 27019
+      - 3000:3000
+      - 9229:9229
+    networks:
+      - fastFood-network
+    depends_on:
+      - mongodb
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    volumes:
+      - ./database:/data/db
+    ports:
+      - 27017:27017
+    networks:
+      - fastFood-network
+    restart: always
+networks:
+  fastFood-network:
+    driver: bridge
