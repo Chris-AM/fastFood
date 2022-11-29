@@ -12,6 +12,7 @@ async function fastoodBackend() {
   const app = await NestFactory.create(AppModule, {
     cors: true,
   });
+  app.enableCors();
   app.enableVersioning({
     defaultVersion: '1',
     type: VersioningType.URI,
