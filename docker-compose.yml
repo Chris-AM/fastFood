@@ -1,14 +1,14 @@
 version: '3.3'
 services:
   dev:
-    container_name: fastFood-API-beta1-dev
-    image: fastFood-API-beta1-dev:1.0.0
+    container_name: fastFood-api-beta1-dev
+    image: fastfood-api-beta-dev:1.0.0
     build:
       context: .
       dockerfile: ./Dockerfile
-      command: npm run start:dev
+    command: npm run start:dev
     ports:
-      - 3000:3000
+      - 80:3000
       - 3001:9229
     networks:
       - fastFood-network
@@ -20,13 +20,13 @@ services:
     restart: unless-stopped
   prod:
     container_name: fastFood-API-beta1-prod
-    image: fastFood-API-beta1-prod:1.0.0
+    image: fastfood-api-beta1-prod:1.0.0
     build:
       context: .
       dockerfile: ./Dockerfile
     command: npm run start:prod
     ports:
-      - 3000:3000
+      - 80:3000
       - 9229:9229
     networks:
       - fastFood-network
@@ -40,7 +40,7 @@ services:
     image: mongo:latest
     container_name: mongodb
     volumes:
-      - ./database:/data/db
+      - /usr/database/database:/data/db
     ports:
       - 27017:27017
     networks:
