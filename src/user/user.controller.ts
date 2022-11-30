@@ -70,7 +70,7 @@ export class UserController {
   @Get('avatar/:filename')
   @HttpCode(200)
   getAvatar(@Param('filename') filename: string, @Res() res: Response) {
-    return of(res.sendFile(join(process.cwd(), './public/' + filename)));
+    return of(res.sendFile(join(process.cwd(), './public/upload/' + filename)));
   }
 
   @Put(':id')

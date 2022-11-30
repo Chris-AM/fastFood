@@ -35,10 +35,10 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 #uploaded imgs
-/public/*.jpeg
-/public/*.jpg
-/public/*.png
-/public/*.webp
+/public/upload/*.jpeg
+/public/upload/*.jpg
+/public/upload/*.png
+/public/upload/*.webp
 # env and project docs
 .env
 .env.development

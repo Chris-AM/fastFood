@@ -78,7 +78,7 @@ export class ProductController {
     @Param('filename') filename: string,
     @Res() response: Response,
   ) {
-    return of(response.sendFile(join(process.cwd(), './public/' + filename)));
+    return of(response.sendFile(join(process.cwd(), './public/upload/' + filename)));
   }
 
   @Put(':id')
